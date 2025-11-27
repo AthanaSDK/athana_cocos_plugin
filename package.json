@@ -1,0 +1,77 @@
+{
+    "$schema": "./@types/schema/package/index.json",
+    "package_version": 2,
+    "name": "athana-cocos",
+    "version": "1.3.0",
+    "author": "CWJoy",
+    "editor": ">=3.4.2",
+    "scripts": {
+        "preinstall": "node ./scripts/preinstall.js",
+        "build": "tsc",
+        "watch": "tsc -w"
+    },
+    "title": "i18n:athana-cocos.title",
+    "description": "i18n:athana-cocos.description",
+    "main": "./dist/main.js",
+    "devDependencies": {
+        "@cocos/creator-types": "^3.8.7",
+        "@types/fs-extra": "^9.0.5",
+        "@types/node": "^18.17.1",
+        "typescript": "^5.8.2"
+    },
+    "dependencies": {
+        "fs-extra": "^10.0.0"
+    },
+    "contributions": {
+        "builder": "dist/builder/build-config.js",
+        "menu": [
+            {
+                "path": "i18n:menu.panel/i18n:athana-cocos.menu_main",
+                "label": "i18n:athana-cocos.menu_sdk_config",
+                "message": "sdk-config"
+            }
+        ],
+        "messages": {
+            "sdk-config": {
+                "methods": [
+                    "showWindow"
+                ]
+            },
+            "sdk-config-save": {
+                "methods": [
+                    "default.save"
+                ]
+            }
+        },
+        "asset-db": {
+            "mount": {
+                "path": "./assets",
+                "readonly": true
+            }
+        },
+        "profile": {
+            "project": {
+                "athana-sdk-config": {
+                    "default": {
+                        "version": "1.3.2",
+                        "enable": true
+                    },
+                    "label": "Athana插件项目配置"
+                }
+            }
+        }
+    },
+    "panels": {
+        "default": {
+            "title": "i18n:athana-cocos.menu_sdk_config",
+            "type": "dockable",
+            "main": "dist/panels/default",
+            "size": {
+                "min-width": 400,
+                "min-height": 300,
+                "width": 400,
+                "height": 300
+            }
+        }
+    }
+}

@@ -1,0 +1,92 @@
+apply plugin: 'org.jetbrains.kotlin.android'
+
+def athanaProperties = new Properties()
+def athanaPropertiesFile = rootProject.file("athana.properties")
+if (athanaPropertiesFile.exists()) {
+    athanaProperties.load(new FileInputStream(athanaPropertiesFile))
+}
+
+def sdkVersion = athanaProperties.getProperty("SDK_VERSION")
+def srvAccEnable = athanaProperties.getProperty("SRV_ACC_ENABLE")
+def importAccHC = athanaProperties.getProperty("IMPORT_ACC_HC")
+def srvAdEnable = athanaProperties.getProperty("SRV_AD_ENABLE")
+def importMAX = athanaProperties.getProperty("IMPORT_AD_MAX")
+def srvCovEnable = athanaProperties.getProperty("SRV_COV_ENABLE")
+def importAppsFlyer = athanaProperties.getProperty("IMPORT_COV_APPSFLYER")
+def importCovFirebase = athanaProperties.getProperty("IMPORT_COV_FIREBASE")
+def importCovFacebook = athanaProperties.getProperty("IMPORT_COV_FACEBOOK")
+def srvPushEnable = athanaProperties.getProperty("SRV_PUSH_ENABLE")
+def importPushFirebase = athanaProperties.getProperty("IMPORT_PUSH_FIREBASE")
+def gpgId = athanaProperties.getProperty("GPG_ID")
+def fbAppId = athanaProperties.getProperty("FB_APP_ID")
+def fbClientToken = athanaProperties.getProperty("FB_CLIENT_TOKEN")
+
+if (srvCovEnable && importCovFirebase || srvPushEnable && importPushFirebase) {
+    apply plugin: 'com.google.gms.google-services'
+    apply plugin: 'com.google.firebase.crashlytics'
+}
+
+android {
+    defaultConfig {
+        // account: 账号模块需要使用的配置
+        resValue "string", "gpg_project_id", "${gpgId}"
+        resValue "string", "facebook_app_id", "${fbAppId}"
+        resValue "string", "facebook_scheme", "fb${fbAppId}"
+        manifestPlaceholders = [
+                // 配置 Facebook SDK
+                FB_LABEL: "@string/app_name",
+                FB_APP_ID: "@string/facebook_app_id",
+                FB_CLIENT_TOKEN: "${fbClientToken}",
+                FB_SCHEME: "@string/facebook_scheme",
+                // 配置 Google Play Games
+                GMS_GAMES_ID: "@string/gpg_project_id"
+        ]
+    }
+
+    if (srvAccEnable && importAccHC) {
+        buildTypes {
+            release {
+                // 配置 Firebase 插件，不上传混淆映射文件
+                firebaseCrashlytics {
+                    mappingFileUploadEnabled false
+                    nativeSymbolUploadEnabled false
+                }
+            }
+            
+            debug {
+                // 配置 Firebase 插件，不上传混淆映射文件
+                firebaseCrashlytics {
+                    mappingFileUploadEnabled false
+                    nativeSymbolUploadEnabled false
+                }
+            }
+        }
+    }
+}
+
+
+dependencies {
+    implementation project(':libAthana')
+
+    api "com.inonesdk.athana:athana:${sdkVersion}"
+    if (srvAdEnable && importMAX) {
+        api "com.inonesdk.athana:ad-max:${sdkVersion}"
+    }
+    if (srvCovEnable) {
+        if (importAppsFlyer) {
+            api "com.inonesdk.athana:conversion-appsflyer:${sdkVersion}"
+        }
+        if (importCovFirebase) {
+            api "com.inonesdk.athana:conversion-firebase:${sdkVersion}"
+        }
+        if (importCovFacebook) {
+            api "com.inonesdk.athana:conversion-meta:${sdkVersion}"
+        }
+    }
+    if (srvAccEnable && importAccHC) {
+        api "com.inonesdk.athana:account-athana:${sdkVersion}"
+    }
+    if (srvPushEnable && importPushFirebase) {
+        api "com.inonesdk.athana:push-firebase:${sdkVersion}"
+    }
+}
