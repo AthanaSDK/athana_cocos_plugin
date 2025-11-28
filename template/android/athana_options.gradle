@@ -68,7 +68,12 @@ android {
 dependencies {
     implementation project(':libAthana')
 
-    api "com.inonesdk.athana:athana:${sdkVersion}"
+    if (sdkVersion.endsWith("-SNAPSHOT")) {
+        api "com.inonesdk.athana:athana-dev:${sdkVersion}"
+    } else {
+        api "com.inonesdk.athana:athana:${sdkVersion}"
+    }
+    
     if (srvAdEnable && importMAX) {
         api "com.inonesdk.athana:ad-max:${sdkVersion}"
     }

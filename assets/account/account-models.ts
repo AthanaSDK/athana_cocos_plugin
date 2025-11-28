@@ -252,3 +252,24 @@ export class TriAccount {
         this.open_id = open_id;
     }
 }
+
+/**
+ * 更新用户信息参数
+ */
+export class UpdateUserInfoParam {
+    /** 自定义用户ID - 游戏内用户ID */
+    public customUserId?: number = null;
+    /** 额外参数 */
+    public extra?: Map<string, any> = null;
+
+    /**
+     * 构造函数
+     * 
+     * @param customUserId 自定义用户ID - 游戏内用户ID
+     * @param extra 额外参数
+     */
+    constructor(customUserId?: number, extra?: Map<string, any>) {
+        this.customUserId = customUserId;
+        this.extra = extra;
+    }
+}

@@ -2,7 +2,7 @@ import { AthanaConfig } from "./config/athana-config";
 import { bridge } from "./bridge/native-bridge";
 import { SdkCallback, SdkResult } from "./bridge/sdk-result";
 import { AccountService } from "./account/account-service";
-import { AccountBindingParam, AccountInfo, RegisterUserParam, SignInParam, SignInWithUIParam, TriAccountBindMap } from "./account/account-models";
+import { AccountBindingParam, AccountInfo, RegisterUserParam, SignInParam, SignInWithUIParam, TriAccountBindMap, UpdateUserInfoParam } from "./account/account-models";
 import { AdService } from "./ad/ad-service";
 import { EventService } from "./event/event-service";
 import { IapService } from "./iap/iap-service";
@@ -26,7 +26,8 @@ export {
     SignInParam,
     SignInWithUIParam,
     AccountBindingParam,
-    TriAccountBindMap
+    TriAccountBindMap,
+    UpdateUserInfoParam
 } from "./account/account-models";
 export {
     IapProduct,
@@ -192,6 +193,19 @@ export class Athana {
             return;
         }
         this._accountService.accountUnbind(param, callback);
+    }
+
+    /**
+     * 更新用户信息
+     * @param param 更新参数 
+     * @param callback 回调函数，返回更新结果
+     */
+    static updateUserInfo(param: UpdateUserInfoParam, callback?: SdkCallback<void>) {
+        if (!this._isInitialized) {
+            console.warn("Athana Cocos - not initialized yet");
+            return;
+        }
+        this._accountService.updateUserInfo(param, callback);
     }
 
     /**

@@ -1,7 +1,7 @@
 import { EventTarget } from "cc";
 import { bridge } from "../bridge/native-bridge";
 import { SdkCallback, SdkResult } from "../bridge/sdk-result";
-import { AccountBindingParam, AccountInfo, RegisterUserParam, SignInParam, SignInWithUIParam, TriAccountBindMap } from "./account-models";
+import { AccountBindingParam, AccountInfo, RegisterUserParam, SignInParam, SignInWithUIParam, TriAccountBindMap, UpdateUserInfoParam } from "./account-models";
 
 export class AccountService extends EventTarget {
 
@@ -125,4 +125,20 @@ export class AccountService extends EventTarget {
         bridge.send2Native(methodName, param);
     }
 
+    updateUserInfo(param: UpdateUserInfoParam, callback?: SdkCallback<void>) {
+        const methodName = "updateUserInfo";
+        if (callback != null) {
+            bridge.dispathcer.once<SdkResult<void>>(
+                methodName,
+                (result) => {
+                    if (result.error != null) {
+                        callback.onError(result.error);
+                    } else {
+                        callback.onSuccess(result.data);
+                    }
+                },
+                this);
+        }
+        bridge.send2Native(methodName, param);
+    }
 }
