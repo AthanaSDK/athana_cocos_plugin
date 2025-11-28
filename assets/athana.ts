@@ -136,6 +136,19 @@ export class Athana {
     }
 
     /**
+     * 用户登出
+     * 
+     * @param callback 回调函数，返回登出结果
+     */
+    static signOut(callback?: SdkCallback<void>) {
+        if (!this._isInitialized) {
+            console.warn("Athana Cocos - not initialized yet");
+            return;
+        }
+        this._accountService.signOut(callback);
+    }
+
+    /**
      * 查询所有三方账户绑定信息
      * 
      * @param callback 回调函数，返回绑定信息
@@ -179,6 +192,19 @@ export class Athana {
             return;
         }
         this._accountService.accountUnbind(param, callback);
+    }
+
+    /**
+     * 查询本地商店服务是否可用
+     * 
+     * @param callback 回调函数，返回是否可用
+     */
+    static isIapAvailable(callback: SdkCallback<boolean>) {
+        if (!this._isInitialized) {
+            console.warn("Athana Cocos - not initialized yet");
+            return;
+        }
+        this._iapService.isAvailable(callback);
     }
 
     /**
@@ -282,12 +308,12 @@ export class Athana {
      * @param param 事件参数
      * @param callback 回调函数，返回发送结果
      */
-    static sendEvent(param: AthanaEvent, callback?: SdkCallback<void>) {
+    static sendEvent(param: AthanaEvent) {
         if (!this._isInitialized) {
             console.warn("Athana Cocos - not initialized yet");
             return;
         }
-        this._eventService.sendEvent(param, callback);
+        this._eventService.sendEvent(param);
     }
 
 }

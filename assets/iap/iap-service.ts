@@ -5,6 +5,21 @@ import { IapProduct, IapPurchaseDetail, PurchaseParam, VerifyOrderParam } from "
 
 export class IapService extends EventTarget {
 
+    isAvailable(callback: SdkCallback<boolean>) {
+        const methodName = "isAvailable";
+        bridge.dispathcer.once<SdkResult<boolean>>(
+            methodName,
+            (result) => {
+                if (result.error != null) {
+                    callback.onError(result.error);
+                } else {
+                    callback.onSuccess(result.data);
+                }
+            },
+            this);
+        bridge.send2Native<void>(methodName);
+    }
+
     queryProducts(keys: string[], callback: SdkCallback<IapProduct[]>) {
         const methodName = "queryProducts";
         bridge.dispathcer.once<SdkResult<IapProduct[]>>(

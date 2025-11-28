@@ -65,15 +65,15 @@ export class AccountService extends EventTarget {
         bridge.send2Native(methodName, param);
     }
 
-    signOut(callback: SdkCallback<void>) {
+    signOut(callback?: SdkCallback<void>) {
         const methodName = "signOut";
         bridge.dispathcer.once<SdkResult<void>>(
             methodName,
             (result) => {
                 if (result.error != null) {
-                    callback.onError(result.error);
+                    callback?.onError(result.error);
                 } else {
-                    callback.onSuccess(result.data);
+                    callback?.onSuccess(result.data);
                 }
             },
             this);
