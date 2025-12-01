@@ -15,7 +15,7 @@ export class SdkConfig {
      */
     public enable: boolean;
 
-    constructor(version: string = '1.3.2', enable: boolean = true) {
+    constructor(version: string = '1.3.4', enable: boolean = true) {
         this.version = version;
         this.enable = enable;
     }
