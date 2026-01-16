@@ -1,5 +1,4 @@
 import { _decorator } from "cc";
-const { ccclass, property } = _decorator;
 
 /**
  * Athana SDK 错误类型
@@ -32,74 +31,37 @@ export enum AthanaErrorType {
 }
 
 /**
- * Athana SDK 错误码
- */
-export enum ErrorCode {
-    /**
-     * 成功
-     */
-    SUCCESS = "SUCCESS",
-
-    /**
-     * 服务错误
-     */
-    SERVER_ERROR = "SERVER_ERROR",
-
-    /**
-     * 请求参数错误
-     */
-    REQUEST_PARAM_ERROR = "REQUEST_PARAM_ERROR",
-
-    /**
-     * 凭证无效
-     */
-    INVALID_CREDENTIALS = "INVALID_CREDENTIALS",
-
-    /**
-     * 请求频率超出限制
-     */
-    REQUEST_TOO_MANY = "REQUEST_TOO_MANY",
-
-    /**
-     * 请求体为空
-     */
-    REQUEST_BODY_EMPTY = "REQUEST_BODY_EMPTY",
-
-    /**
-     * 请求体长度超出限制
-     */
-    REQUEST_BODY_TOO_LARGE = "REQUEST_BODY_TOO_LARGE",
-
-    /**
-     * 用户凭证失效/错误
-     */
-    REQUEST_USER_TOKEN_ERROR = "REQUEST_USER_TOKEN_ERROR"
-}
-
-/**
  * Athana SDK 错误信息
  */
 export class AthanaError {
 
     /** 错误类型 */
-    public type: AthanaErrorType;
+    public readonly type: AthanaErrorType;
 
     /** 错误码 */
-    public code?: ErrorCode = null;
+    public readonly errorCode?: number = null;
 
     /** 错误信息 */
-    public message?: string = null;
+    readonly msg?: string = null;
 
-    constructor(type: AthanaErrorType, code?: ErrorCode, message?: string) {
+    /** 额外错误信息 */
+    readonly message?: string = null;
+
+    constructor(type: AthanaErrorType, errorCode?: number, msg?: string, message?: string) {
         this.type = type;
-        this.code = code;
+        this.errorCode = errorCode;
+        this.msg = msg;
         this.message = message;
+    }
+
+    takeErrMsg(): string | null {
+        return this.msg ?? this.message;
     }
 }
 
 export interface SdkResult<T> {
-    data?: T;
-    error?: AthanaError;
+    readonly data?: T;
+    readonly error?: AthanaError;
 }
 
 /**

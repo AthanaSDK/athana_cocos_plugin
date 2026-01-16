@@ -11,6 +11,7 @@ import { appendDestContentToSrcFileIfNo, deleteDestContentInSrcFile } from "../u
 export class HooksHandlerAndroid {
 
     private copyLib(dest: string, projectConfig: SdkConfig, taskConfig: SdkBuildTaskConfig) {
+        console.log(packageJSON.name + ' copyLib start');
         // 拷贝 template/android/libAthana 到构建输出目录 $dest/proj/libAthana
         const extLibPath = EnvConstants.AthanaLibSrcPath;
         const destLibPath = `${dest}${EnvConstants.AthanaLibDestPath}`;
@@ -20,9 +21,11 @@ export class HooksHandlerAndroid {
         const gradleExtLibPath = EnvConstants.AthanaOptionsGradleSrcPath;
         const gradleDestLibPath = EnvConstants.AthanaOptionsGradleDestPath;
         fse.copySync(gradleExtLibPath, gradleDestLibPath, { recursive: true, overwrite: true });
+        console.log(packageJSON.name + ' copyLib end');
     }
 
     private updateGradle(dest: string, projectConfig: SdkConfig, taskConfig: SdkBuildTaskConfig) {
+        console.log(packageJSON.name + ' updateGradle start');
         EnvConstants.AppBuildGradle
         const srcGradle = EnvConstants.AppBuildGradle;
         const destGradle = EnvConstants.AthanaTemplateGradlePath;
@@ -39,9 +42,11 @@ export class HooksHandlerAndroid {
             deleteDestContentInSrcFile(srcGradle, destGradle);
             deleteDestContentInSrcFile(srcSetting, destSetting);
         }
+        console.log(packageJSON.name + ' updateGradle end');
     }
 
     private updateProperty(dest: string, projectConfig: SdkConfig, taskConfig: SdkBuildTaskConfig) {
+        console.log(packageJSON.name + ' updateProperty start');
         // 修改 athana.properties
         const propertiesPath = `${dest}/proj/athana.properties`;
         if (!fse.existsSync(propertiesPath)) {
@@ -64,20 +69,21 @@ export class HooksHandlerAndroid {
             `FB_APP_ID=${taskConfig.triSdk?.facebookAppId || ""}\n` +
             `FB_CLIENT_TOKEN=${taskConfig.triSdk?.facebookClientToken || ""}\n`
         );
+        console.log(packageJSON.name + ' updateProperty end');
     }
 
     async onBuild(options: ITaskOptions, buildResult: IBuildResult) {
         // 读取项目配置
         const projectConfig = await SdkConfig.read();
-        console.log(packageJSON.name, '[onBuild] projectConfig -> ', projectConfig);
+        console.log(packageJSON.name + ' [onBuild] projectConfig -> ' + projectConfig);
 
         // 读取任务配置
         const taskConfig = options.packages[packageJSON.name] as SdkBuildTaskConfig;
-        console.log(packageJSON.name, '[onBuild] taskConfig -> ', taskConfig);
+        console.log(packageJSON.name + ' [onBuild] taskConfig -> ' + taskConfig);
 
         // 构建输出目录
         const dest = buildResult.dest;
-        console.log(packageJSON.name, '[onBuild] dest -> ', dest);
+        console.log(packageJSON.name + ' [onBuild] dest -> ' + dest);
 
         this.copyLib(dest, projectConfig, taskConfig);
         this.updateGradle(dest, projectConfig, taskConfig);

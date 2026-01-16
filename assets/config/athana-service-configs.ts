@@ -1,5 +1,4 @@
 import { SignInType } from "../account/account-models";
-import { AdType } from "../ad/ad-models";
 
 export class AccountServiceConfig {
     public readonly googleWebClientId: string;
@@ -25,11 +24,11 @@ export class MaxAdServiceConfig {
     public readonly sdkKey: string;
     public readonly privacyPolicyUrl?: string | null = null;
     public readonly termsOfServiceUrl?: string | null = null;
-    public readonly preloadAds?: Map<AdType, string> | null = null;
+    public readonly preloadAds?: Object | null = null;
     public readonly debug: boolean = false;
     public readonly preload: boolean = true;
 
-    constructor(sdkKey: string, privacyPolicyUrl?: string, termsOfServiceUrl?: string, preloadAds?: Map<AdType, string>, debug?: boolean, preload?: boolean) {
+    constructor(sdkKey: string, privacyPolicyUrl?: string, termsOfServiceUrl?: string, preloadAds?: Object, debug?: boolean, preload?: boolean) {
         this.sdkKey = sdkKey;
         this.privacyPolicyUrl = privacyPolicyUrl;
         this.termsOfServiceUrl = termsOfServiceUrl;
@@ -50,10 +49,12 @@ export class ConversionServiceConfigs {
 
 export class AppsFlyerServiceConfig {
     public readonly sdkKey: string;
+    public readonly appStoreId?: string;
     public readonly manualStart: boolean = false;
 
-    constructor(sdkKey: string, manualStart?: boolean) {
+    constructor(sdkKey: string, appStoreId?: string, manualStart?: boolean) {
         this.sdkKey = sdkKey;
+        this.appStoreId = appStoreId;
         this.manualStart = manualStart ?? false;
     }
 }

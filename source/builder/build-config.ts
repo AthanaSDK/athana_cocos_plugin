@@ -1,11 +1,12 @@
-import { BuildPlugin } from '../../@types';
+import { BuildPlugin, IBuildTaskOption } from '../../@types/packages/builder/@types';
 import packageJSON from '../../package.json';
+import { DepsManagers } from './ios/deps-manager-type';
 
 export const load: BuildPlugin.load = function () {
-    console.debug(`athana-cocos builder load`);
+    console.log(`athana-cocos builder load`);
 };
 export const unload: BuildPlugin.load = function () {
-    console.debug(`athana-cocos builder unload`);
+    console.log(`athana-cocos builder unload`);
 };
 
 const adProviders = {
@@ -23,7 +24,7 @@ const adProviders = {
         default: false,
         render: {
             ui: 'ui-checkbox'
-        }
+        },
     }
 };
 
@@ -128,6 +129,39 @@ const triSdk = {
     }
 };
 
+const iOSTriSdk = {
+    facebookAppId: {
+        label: `i18n:${packageJSON.name}.builder.tri_meta_app_id`,
+        default: "",
+        render: {
+            ui: 'ui-input',
+        },
+        // verifyRules: ['ruleTest'],
+    },
+    facebookClientToken: {
+        label: `i18n:${packageJSON.name}.builder.tri_meta_app_client_token`,
+        default: "",
+        render: {
+            ui: 'ui-input',
+        },
+        // verifyRules: ['ruleTest'],
+    },
+    googleWebClient: {
+        label: `i18n:${packageJSON.name}.builder.tri_google_web_client_id`,
+        default: "",
+        render: {
+            ui: 'ui-input',
+        },
+    },
+    firebaseConfigPath: {
+        label: `i18n:${packageJSON.name}.builder.tri_firebase_config_path`,
+        default: "",
+        render: {
+            ui: 'ui-input',
+        },
+    }
+};
+
 export const configs: BuildPlugin.Configs = {
     'android': {
         hooks: './hooks',
@@ -180,6 +214,92 @@ export const configs: BuildPlugin.Configs = {
                     facebookClientToken: triSdk.facebookClientToken.default,
                 },
                 itemConfigs: triSdk,
+            }
+        },
+        verifyRuleMap: {
+            // ruleTest: {
+            //     message: `i18n:${PACKAGE_NAME}.options.ruleTest_msg`,
+            //     func(val, buildOptions) {
+            //         if (val === 'cocos') {
+            //             return true;
+            //         }
+            //         return false;
+            //     },
+            // },
+        },
+    },
+    'ios': {
+        hooks: './hooks',
+        // doc: 'editor/publish/custom-build-plugin.html',
+        options: {
+            depsManager: {
+                label: `i18n:${packageJSON.name}.builder.ser_deps_manager`,
+                description: `i18n:${packageJSON.name}.builder.ser_deps_manager_desc`,
+                default: "",
+                render: {
+                    ui: 'ui-select',
+                    items: [
+                        {
+                            "value": DepsManagers.COCOA_PODS,
+                            "label": "CocoaPods"
+                        },
+                        {
+                            "value": DepsManagers.SWIFT_PM,
+                            "label": "Swift Package Manager"
+                        },
+                    ]
+                },
+            },
+            ad: {
+                label: `i18n:${packageJSON.name}.builder.ser_ad`,
+                type: 'object',
+                default: {
+                    service: adProviders.service.default,
+                    max: adProviders.max.default,
+                },
+                itemConfigs: adProviders,
+                passThrough: true,
+            },
+            account: {
+                label: `i18n:${packageJSON.name}.builder.ser_acc`,
+                type: 'object',
+                default: {
+                    service: accountProviders.service.default,
+                    athana: accountProviders.athana.default,
+                    gpgId: accountProviders.gpgId.default,
+                },
+                itemConfigs: accountProviders,
+            },
+            conversion: {
+                label: `i18n:${packageJSON.name}.builder.ser_cvr`,
+                type: 'object',
+                default: {
+                    service: conversionProviders.service.default,
+                    appsflyer: conversionProviders.appsflyer.default,
+                    firebase: conversionProviders.firebase.default,
+                    meta: conversionProviders.meta.default,
+                },
+                itemConfigs: conversionProviders,
+            },
+            push: {
+                label: `i18n:${packageJSON.name}.builder.ser_push`,
+                type: 'object',
+                default: {
+                    service: pushProviders.service.default,
+                    firebase: pushProviders.firebase.default,
+                },
+                itemConfigs: pushProviders,
+            },
+            triSdk: {
+                label: `i18n:${packageJSON.name}.builder.tri_sdk_config`,
+                type: 'object',
+                default: {
+                    facebookAppId: iOSTriSdk.facebookAppId.default,
+                    facebookClientToken: iOSTriSdk.facebookClientToken.default,
+                    googleWebClient: iOSTriSdk.googleWebClient.default,
+                    firebaseConfigPath: iOSTriSdk.firebaseConfigPath.default,
+                },
+                itemConfigs: iOSTriSdk,
             }
         },
         verifyRuleMap: {

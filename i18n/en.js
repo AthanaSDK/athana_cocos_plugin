@@ -6,6 +6,9 @@ module.exports = {
     menu_sdk_config: "SDK Configuration",
     
     builder: {
+        ser_deps_manager: "Deps Manager",
+        ser_deps_manager_desc: "Please Select a Deps Manager",
+
         ser_acc: "Account Service",
         ser_ad: "Advertising Service",
         ser_cvr: "Conversion Service",
@@ -25,11 +28,13 @@ module.exports = {
 
         tri_sdk_config: "Third-Party SDK Configuration",
         tri_meta_app_id: "Facebook AppID",
-        tri_meta_app_client_token: "Facebook ClientToken"
+        tri_meta_app_client_token: "Facebook ClientToken",
+        tri_google_web_client_id: "Google Web Client ID",
+        tri_firebase_config_path: "google-service.json Path"
     },
 
     panels: {
-        config_sdk_android_version: "SDK Android Veersion",
+        config_sdk_android_version: "SDK Android Version",
         config_enable: "Enable Custom Build Configuration",
         config_save: "Save"
     }

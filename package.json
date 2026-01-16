@@ -2,7 +2,7 @@
     "$schema": "./@types/schema/package/index.json",
     "package_version": 2,
     "name": "athana-cocos",
-    "version": "1.3.1",
+    "version": "1.3.4",
     "author": "CWJoy",
     "editor": ">=3.4.2",
     "scripts": {
@@ -20,7 +20,9 @@
         "typescript": "^5.8.2"
     },
     "dependencies": {
-        "fs-extra": "^10.0.0"
+        "fs-extra": "^10.0.0",
+        "plist": "^3.1.0",
+        "zx": "^8.8.5"
     },
     "contributions": {
         "builder": "dist/builder/build-config.js",
@@ -53,7 +55,8 @@
             "project": {
                 "athana-sdk-config": {
                     "default": {
-                        "version": "1.3.2",
+                        "version": "1.3.4",
+                        "iosVersion": "1.0.0",
                         "enable": true
                     },
                     "label": "Athana插件项目配置"

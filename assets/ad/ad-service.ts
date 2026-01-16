@@ -15,7 +15,7 @@ const methodAdOnClose: string = "adOnClose";
 /**
  * 广告服务
  */
-export class AdService extends EventTarget {
+export class AdService {
 
     /**
      * 加载开屏广告
@@ -38,8 +38,7 @@ export class AdService extends EventTarget {
         return new Promise((resolve, reject) => {
             bridge.dispathcer.once<AdIsReadyResult>(
                 methodName,
-                (result) => resolve(result.isReady),
-                this
+                (result) => resolve(result.isReady)
             );
             bridge.send2Native(methodName, new AdParam(AdType.AppOpen, adUnitId));
         });
@@ -77,8 +76,7 @@ export class AdService extends EventTarget {
         return new Promise((resolve, reject) => {
             bridge.dispathcer.once<AdIsReadyResult>(
                 methodName,
-                (result) => resolve(result.isReady),
-                this
+                (result) => resolve(result.isReady)
             );
             bridge.send2Native(methodName, new AdParam(AdType.Interstitial, adUnitId));
         });
@@ -116,8 +114,7 @@ export class AdService extends EventTarget {
         return new Promise((resolve, reject) => {
             bridge.dispathcer.once<AdIsReadyResult>(
                 methodName,
-                (result) => resolve(result.isReady),
-                this
+                (result) => resolve(result.isReady)
             );
             bridge.send2Native(methodName, new AdParam(AdType.Rewarded, adUnitId));
         });
@@ -152,8 +149,7 @@ export class AdService extends EventTarget {
                         const error = new AthanaError(AthanaErrorType.SDK_REQUEST_ERROR, null, "Create banner ad failed");
                         reject(error);
                     }
-                },
-                this
+                }
             );
             bridge.send2Native(methodName, param);
         });
@@ -166,7 +162,7 @@ export class AdService extends EventTarget {
      */
     registerOnLoaded(adType: AdType, callback: (ad: ProxyAd) => void) {
         const methodName = methodAdOnLoaded + '-' + adType;
-        bridge.dispathcer.on<ProxyAd>(methodName, callback, this);
+        bridge.dispathcer.on<ProxyAd>(methodName, callback);
     }
 
     /**
@@ -176,7 +172,7 @@ export class AdService extends EventTarget {
      */
     unregisterOnLoaded(adType: AdType, callback: (ad: ProxyAd) => void) {
         const methodName = methodAdOnLoaded + '-' + adType;
-        bridge.dispathcer.off<ProxyAd>(methodName, callback, this);
+        bridge.dispathcer.off<ProxyAd>(methodName, callback);
     }
 
     /**
@@ -186,7 +182,7 @@ export class AdService extends EventTarget {
      */
     registerOnLoadFailed(adType: AdType, callback: (error: AdEventResult) => void) {
         const methodName = methodAdOnLoadFailed + '-' + adType;
-        bridge.dispathcer.on<AdEventResult>(methodName, callback, this);
+        bridge.dispathcer.on<AdEventResult>(methodName, callback);
     }
 
     /**
@@ -196,7 +192,7 @@ export class AdService extends EventTarget {
      */
     unregisterOnLoadFailed(adType: AdType, callback: (error: AdEventResult) => void) {
         const methodName = methodAdOnLoadFailed + '-' + adType;
-        bridge.dispathcer.off<AdEventResult>(methodName, callback, this);
+        bridge.dispathcer.off<AdEventResult>(methodName, callback);
     }
 
     /**
@@ -206,7 +202,7 @@ export class AdService extends EventTarget {
      */
     registerOnDisplayed(adType: AdType, callback: (ad: ProxyAd) => void) {
         const methodName = methodAdOnDisplayed + '-' + adType;
-        bridge.dispathcer.on<ProxyAd>(methodName, callback, this);
+        bridge.dispathcer.on<ProxyAd>(methodName, callback);
     }
 
     /**
@@ -216,7 +212,7 @@ export class AdService extends EventTarget {
      */
     unregisterOnDisplayed(adType: AdType, callback: (ad: ProxyAd) => void) {
         const methodName = methodAdOnDisplayed + '-' + adType;
-        bridge.dispathcer.off<ProxyAd>(methodName, callback, this);
+        bridge.dispathcer.off<ProxyAd>(methodName, callback);
     }
 
     /**
@@ -226,7 +222,7 @@ export class AdService extends EventTarget {
      */
     registerOnDisplayFailed(adType: AdType, callback: (error: AdEventResult) => void) {
         const methodName = methodAdOnDisplayFailed + '-' + adType;
-        bridge.dispathcer.on<AdEventResult>(methodName, callback, this);
+        bridge.dispathcer.on<AdEventResult>(methodName, callback);
     }
 
     /**
@@ -236,7 +232,7 @@ export class AdService extends EventTarget {
      */
     unregisterOnDisplayFailed(adType: AdType, callback: (error: AdEventResult) => void) {
         const methodName = methodAdOnDisplayFailed + '-' + adType;
-        bridge.dispathcer.off<AdEventResult>(methodName, callback, this);
+        bridge.dispathcer.off<AdEventResult>(methodName, callback);
     }
 
     /**
@@ -246,7 +242,7 @@ export class AdService extends EventTarget {
      */
     registerOnRewarded(adType: AdType, callback: (ad: ProxyAd) => void) {
         const methodName = methodAdOnRewarded + '-' + adType;
-        bridge.dispathcer.on<ProxyAd>(methodName, callback, this);
+        bridge.dispathcer.on<ProxyAd>(methodName, callback);
     }
 
     /**
@@ -256,7 +252,7 @@ export class AdService extends EventTarget {
      */
     unregisterOnRewarded(adType: AdType, callback: (ad: ProxyAd) => void) {
         const methodName = methodAdOnRewarded + '-' + adType;
-        bridge.dispathcer.off<ProxyAd>(methodName, callback, this);
+        bridge.dispathcer.off<ProxyAd>(methodName, callback);
     }
 
     /**
@@ -266,7 +262,7 @@ export class AdService extends EventTarget {
      */
     registerOnClick(adType: AdType, callback: (ad: ProxyAd) => void) {
         const methodName = methodAdOnClick + '-' + adType;
-        bridge.dispathcer.on<ProxyAd>(methodName, callback, this);
+        bridge.dispathcer.on<ProxyAd>(methodName, callback);
     }
 
     /**
@@ -276,7 +272,7 @@ export class AdService extends EventTarget {
      */
     unregisterOnClick(adType: AdType, callback: (ad: ProxyAd) => void) {
         const methodName = methodAdOnClick + '-' + adType;
-        bridge.dispathcer.off<ProxyAd>(methodName, callback, this);
+        bridge.dispathcer.off<ProxyAd>(methodName, callback);
     }
 
     /**
@@ -286,7 +282,7 @@ export class AdService extends EventTarget {
      */
     registerOnClose(adType: AdType, callback: (ad: ProxyAd) => void) {
         const methodName = methodAdOnClose + '-' + adType;
-        bridge.dispathcer.on<ProxyAd>(methodName, callback, this);
+        bridge.dispathcer.on<ProxyAd>(methodName, callback);
     }
 
     /**
@@ -296,7 +292,7 @@ export class AdService extends EventTarget {
      */
     unregisterOnClose(adType: AdType, callback: (ad: ProxyAd) => void) {
         const methodName = methodAdOnClose + '-' + adType;
-        bridge.dispathcer.off<ProxyAd>(methodName, callback, this);
+        bridge.dispathcer.off<ProxyAd>(methodName, callback);
     }
 
 }

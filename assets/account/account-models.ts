@@ -35,27 +35,27 @@ export class AccountInfo {
     /**
      * 平台用户Id
      */
-    public userId: number;
+    public readonly userId: number;
     /**
      * 平台用户访问凭证
      */
-    public accessToken: string;
+    public readonly accessToken: string;
     /**
      * 登录方式
      */
-    public signInType: SignInType;
+    public readonly signInType: SignInType;
     /**
      * 第三方账户 OpenID
      */
-    public triOpenId?: string;
+    public readonly triOpenId?: string;
     /**
      * 第三方账户访问凭证
      */
-    public triAccessToken?: string;
+    public readonly triAccessToken?: string;
     /**
      * 用户属性
      */
-    public userProperty: UserProperty;
+    public readonly userProperty: UserProperty;
 
     constructor(userId: number, accessToken: string, signInType: SignInType, triOpenId?: string, triAccessToken?: string, userProperty?: UserProperty) {
         this.userId = userId;
@@ -74,23 +74,23 @@ export class UserProperty {
     /**
      * 昵称，来源于第三方账号
      */
-    public nickname?: string;
+    public readonly nickname?: string;
     /**
      * 邮箱
      */
-    public email?: string;
+    public readonly email?: string;
     /**
      * 电话
      */
-    public phone?: string;
+    public readonly phone?: string;
     /**
      * 账户头像图片链接
      */
-    public avatarUrl?: string;
+    public readonly avatarUrl?: string;
     /**
      * 额外属性
      */
-    public extra?: Map<string, any>;
+    public readonly extra?: Map<string, any>;
 
     constructor(nickname?: string, email?: string, phone?: string, avatarUrl?: string, extra?: Map<string, any>) {
         this.nickname = nickname;
@@ -201,27 +201,27 @@ export class TriAccountBindMap{
     /**
      * Facebook 账号绑定信息
      */
-    public Facebook?: TriAccount = null;
+    public readonly Facebook?: TriAccount = null;
 
     /**
      * Apple 账号绑定信息
      */
-    public Apple?: TriAccount = null;
+    public readonly Apple?: TriAccount = null;
 
     /**
      * Google 账号绑定信息
      */
-    public Google?: TriAccount = null;
+    public readonly Google?: TriAccount = null;
 
     /**
      * Google Play Game 账号绑定信息
      */
-    public GoogleGameV2?: TriAccount = null;
+    public readonly GoogleGameV2?: TriAccount = null;
 
     /**
      * Firebase Auth 账号绑定信息
      */
-    public Firebase?: TriAccount = null;
+    public readonly Firebase?: TriAccount = null;
 
     constructor(facebook?: TriAccount, apple?: TriAccount, google?: TriAccount, googleGameV2?: TriAccount, firebase?: TriAccount) {
         this.Facebook = facebook;
@@ -240,12 +240,12 @@ export class TriAccount {
     /**
      * 昵称
      */
-    public nick_name?: string = null;
+    public readonly nick_name?: string = null;
 
     /**
      * Open ID
      */
-    public open_id?: string = null;
+    public readonly open_id?: string = null;
 
     constructor(nick_name?: string, open_id?: string) {
         this.nick_name = nick_name;

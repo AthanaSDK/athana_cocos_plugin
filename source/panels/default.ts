@@ -26,7 +26,7 @@ module.exports = Editor.Panel.define({
     methods: {
         save(config?: SdkConfig) {
             if (config != null) {
-                const newConfig = new SdkConfig(config.version, config.enable);
+                const newConfig = new SdkConfig(config.version, config.iosVersion, config.enable);
                 console.debug('to save:', newConfig);
                 newConfig.save();
             }
@@ -52,7 +52,7 @@ module.exports = Editor.Panel.define({
                     Editor.Message.request(
                         packageJSON.name, 
                         'sdk-config-save', 
-                        new SdkConfig(versionInput.value, enableCheckBox.checked)
+                        new SdkConfig(versionInput.value, versionInput.iosVersion, enableCheckBox.checked)
                     );
                 });
             }

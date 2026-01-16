@@ -6,6 +6,9 @@ module.exports = {
     menu_sdk_config: "SDK 配置",
     
     builder: {
+        ser_deps_manager: "依赖管理方案",
+        ser_deps_manager_desc: "请选择依赖管理方案",
+
         ser_acc: "三方登录服务",
         ser_ad: "广告服务",
         ser_cvr: "归因服务",
@@ -25,7 +28,9 @@ module.exports = {
 
         tri_sdk_config: "三方SDK配置",
         tri_meta_app_id: "Facebook AppID",
-        tri_meta_app_client_token: "Facebook ClientToken"
+        tri_meta_app_client_token: "Facebook ClientToken",
+        tri_google_web_client_id: "Google Web Client ID",
+        tri_firebase_config_path: "google-service.json Path"
     },
 
     panels: {

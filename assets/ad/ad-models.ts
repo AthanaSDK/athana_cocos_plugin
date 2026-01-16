@@ -47,8 +47,8 @@ export class AdParam {
 }
 
 export class AdIsReadyResult {
-    public adType: AdType;
-    public isReady: boolean;
+    public readonly adType: AdType;
+    public readonly isReady: boolean;
 
     constructor(adType: AdType, isReady: boolean) {
         this.adType = adType;
@@ -182,42 +182,42 @@ export class ProxyAd {
      * - 4 - Interstitial
      * - 5 - App Open
      */
-    public type: number;
+    public readonly type: number;
     /**
      * 广告展示类型：
      *
      * - 1 - FullScreen Ad 全屏
      * - 2 - Banner Ad 横幅
      */
-    public classify: number;
+    public readonly classify: number;
     /**
      * 广告平台
      */
-    public platform: string;
+    public readonly platform: string;
     /**
      * 广告渠道
      */
-    public source: string;
+    public readonly source: string;
     /**
      * 广告位
      */
-    public adUnitId: string;
+    public readonly adUnitId: string;
     /**
      * 调用广告的位置
      */
-    public placement?: string;
+    public readonly placement?: string;
     /**
      * 广告收益货币
      */
-    public currency: string;
+    public readonly currency: string;
     /**
      * 广告收益
      */
-    public revenue: number;
+    public readonly revenue: number;
     /**
      * 广告收益数额精度
      */
-    public revenuePrecision?: string;
+    public readonly revenuePrecision?: string;
     
 }
 
@@ -248,13 +248,13 @@ export function toAdType(value: number): AdType {
  */
 export class AdError {
     /** 错误码 */
-    public code: number;
+    public readonly code: number;
     /** 错误信息 */
-    public message: string;
+    public readonly message: string;
     /** 广告源错误码 */
-    public networkErrorCode?: number;
+    public readonly networkErrorCode?: number;
     /** 广告源错误信息 */
-    public networkErrorMessage?: string;
+    public readonly networkErrorMessage?: string;
 
     /**  构造函数
      * 
@@ -276,9 +276,9 @@ export class AdError {
  */
 export class AdEventResult {
     /** 广告信息 */
-    public ad: ProxyAd;
+    public readonly ad: ProxyAd;
     /** 广告错误信息 */
-    public error?: AdError;
+    public readonly error?: AdError;
 
     constructor(ad: ProxyAd, error?: AdError) {
         this.ad = ad;

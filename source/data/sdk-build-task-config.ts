@@ -4,6 +4,11 @@
 export interface SdkBuildTaskConfig {
 
     /**
+     * iOS 项目的依赖管理方案
+     */
+    depsManager?: String;
+
+    /**
      * 广告服务配置
      */
     ad?: {
@@ -83,6 +88,18 @@ export interface SdkBuildTaskConfig {
          * Facebook 客户端令牌
          */
         facebookClientToken: string;
+        /**
+         * Google Sign-In - Web Client ID
+         * 
+         * ps: Only iOS
+         */
+        googleWebClient: string;
+        /**
+         * google-servics.json file path
+         * 
+         * ps: Only iOS
+         */
+        firebaseConfigPath: string;
     };
 
 }

@@ -3,7 +3,7 @@ import { bridge } from "../bridge/native-bridge";
 import { SdkCallback, SdkResult } from "../bridge/sdk-result";
 import { AccountBindingParam, AccountInfo, RegisterUserParam, SignInParam, SignInWithUIParam, TriAccountBindMap, UpdateUserInfoParam } from "./account-models";
 
-export class AccountService extends EventTarget {
+export class AccountService {
 
     currentUser(callback: SdkCallback<AccountInfo | null>) {
         const methodName = "currentUser";
@@ -15,8 +15,7 @@ export class AccountService extends EventTarget {
                 } else {
                     callback.onSuccess(result.data);
                 }
-            },
-            this);
+            });
         bridge.send2Native<void>(methodName);
     }
 
@@ -30,8 +29,7 @@ export class AccountService extends EventTarget {
                 } else {
                     callback.onSuccess(result.data);
                 }
-            },
-            this);
+            });
         bridge.send2Native(methodName, param);
     }
 
@@ -45,8 +43,7 @@ export class AccountService extends EventTarget {
                 } else {
                     callback.onSuccess(result.data);
                 }
-            },
-            this);
+            });
         bridge.send2Native(methodName, param);
     }
 
@@ -60,8 +57,7 @@ export class AccountService extends EventTarget {
                 } else {
                     callback.onSuccess(result.data);
                 }
-            },
-            this);
+            });
         bridge.send2Native(methodName, param);
     }
 
@@ -75,8 +71,7 @@ export class AccountService extends EventTarget {
                 } else {
                     callback?.onSuccess(result.data);
                 }
-            },
-            this);
+            });
         bridge.send2Native(methodName);
     }
 
@@ -90,8 +85,7 @@ export class AccountService extends EventTarget {
                 } else {
                     callback.onSuccess(result.data);
                 }
-            },
-            this);
+            });
         bridge.send2Native(methodName, extra);
     }
 
@@ -105,8 +99,7 @@ export class AccountService extends EventTarget {
                 } else {
                     callback.onSuccess(result.data);
                 }
-            },
-            this);
+            });
         bridge.send2Native(methodName, param);
     }
 
@@ -120,8 +113,7 @@ export class AccountService extends EventTarget {
                 } else {
                     callback.onSuccess(result.data);
                 }
-            },
-            this);
+            });
         bridge.send2Native(methodName, param);
     }
 
@@ -136,8 +128,7 @@ export class AccountService extends EventTarget {
                     } else {
                         callback.onSuccess(result.data);
                     }
-                },
-                this);
+                });
         }
         bridge.send2Native(methodName, param);
     }

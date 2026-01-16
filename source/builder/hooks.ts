@@ -2,6 +2,7 @@ import { BuildHook, IBuildResult, IBuildTaskOption } from '../../@types';
 import packageJSON from '../../package.json';
 import { SdkBuildTaskConfig } from '../data/sdk-build-task-config';
 import { hooksHandlerAndroid } from './android/hooks';
+import { hooksHandlerIOS } from './ios/hooks';
 
 export const throwError: BuildHook.throwError = true;
 
@@ -17,31 +18,31 @@ export const load: BuildHook.load = async function() {
 
 export const onBeforeBuild: BuildHook.onBeforeBuild = async function(options: ITaskOptions) {
     // 构建开始之前调用
-    console.log(packageJSON.name,'onBeforeBuild');
+    console.log(packageJSON.name + ' onBeforeBuild');
 };
 
 export const onBeforeCompressSettings: BuildHook.onBeforeCompressSettings = async function(options: ITaskOptions, result: IBuildResult) {
     // 开始压缩相关的 JSON 文件前调用
-    console.log(packageJSON.name,'onBeforeCompressSettings');
+    console.log(packageJSON.name + ' onBeforeCompressSettings');
 };
 
 export const onAfterCompressSettings: BuildHook.onAfterCompressSettings = async function(options: ITaskOptions, result: IBuildResult) {
     // 压缩完设置文件后调用
-    console.log(packageJSON.name, 'onAfterCompressSettings');
-    if(options.platform === "ios") {
-        // 处理参数
-    }
+    console.log(packageJSON.name + ' onAfterCompressSettings');
 };
 
 export const onAfterBuild: BuildHook.onAfterBuild = async function(options: ITaskOptions, result: IBuildResult) {
     // 构建完成之后调用
-    console.log(packageJSON.name, 'onAfterBuild');
+    console.log(packageJSON.name + ' onAfterBuild');
     if(options.platform === "android") {
         // 处理参数
         await hooksHandlerAndroid.android.onBuild(options, result);
+    } else if(options.platform === "ios") {
+        // 处理参数
+        await hooksHandlerIOS.ios.onBuild(options, result);
     }
 };
 
 export const unload: BuildHook.unload = async function() {
-    console.log(packageJSON.name, 'unload');
+    console.log(packageJSON.name + ' unload');
 };

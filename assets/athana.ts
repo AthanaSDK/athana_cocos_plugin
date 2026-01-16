@@ -82,6 +82,18 @@ export class Athana {
     }
 
     /**
+     * 申请通知权限
+     * 
+     */
+    static requestNotifications() {
+        if (!this._isInitialized) {
+            console.warn("Athana Cocos - not initialized yet");
+            return;
+        }
+        bridge.send2Native<object>("requestNotifications");
+    }
+
+    /**
      * 获取当前用户
      * 
      * @param callback 回调函数，返回当前用户信息，当未登入或凭证失效则返回 null
@@ -301,8 +313,7 @@ export class Athana {
                 } else {
                     callback.onSuccess(result.data);
                 }
-            },
-            this);
+            });
         bridge.send2Native<void>(methodName);
     }
 

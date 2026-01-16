@@ -15,8 +15,7 @@ export class IapService extends EventTarget {
                 } else {
                     callback.onSuccess(result.data);
                 }
-            },
-            this);
+            });
         bridge.send2Native<void>(methodName);
     }
 
@@ -30,8 +29,7 @@ export class IapService extends EventTarget {
                 } else {
                     callback.onSuccess(result.data);
                 }
-            },
-            this);
+            });
         bridge.send2Native<object>(methodName, { "keys" : keys });
     }
 
@@ -45,8 +43,7 @@ export class IapService extends EventTarget {
                 } else {
                     callback.onSuccess(result.data);
                 }
-            },
-            this);
+            });
         bridge.send2Native<PurchaseParam>(methodName, param);
     }
 
@@ -60,8 +57,7 @@ export class IapService extends EventTarget {
                 } else {
                     callback.onSuccess(result.data);
                 }
-            },
-            this);
+            });
         bridge.send2Native<void>(methodName);
     }
 
@@ -75,8 +71,7 @@ export class IapService extends EventTarget {
                 } else {
                     callback.onSuccess(result.data);
                 }
-            },
-            this);
+            });
         bridge.send2Native<VerifyOrderParam>(methodName, param);
     }
 
