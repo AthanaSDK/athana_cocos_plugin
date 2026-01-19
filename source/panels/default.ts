@@ -20,6 +20,7 @@ module.exports = Editor.Panel.define({
     $: {
         app: '#app',
         versionInput: '#versionInput',
+        iOSVersionInput: '#iOSVersionInput',
         enableCheckBox: '#enableCheckBox',
         saveBtn: '#saveBtn'
     },
@@ -35,6 +36,7 @@ module.exports = Editor.Panel.define({
     ready() {
         // 加载完成
         const versionInput = this.$.versionInput;
+        const iOSVersionInput = this.$.iOSVersionInput;
         const enableCheckBox = this.$.enableCheckBox;
         const saveBtn = this.$.saveBtn;
 
@@ -44,6 +46,9 @@ module.exports = Editor.Panel.define({
             if (versionInput) {
                 versionInput.value = config.version;
             }
+            if (iOSVersionInput) {
+                iOSVersionInput.value = config.iosVersion;
+            }
             if (enableCheckBox) {
                 enableCheckBox.checked = config.enable;
             }
@@ -52,7 +57,7 @@ module.exports = Editor.Panel.define({
                     Editor.Message.request(
                         packageJSON.name, 
                         'sdk-config-save', 
-                        new SdkConfig(versionInput.value, versionInput.iosVersion, enableCheckBox.checked)
+                        new SdkConfig(versionInput.value, iOSVersionInput.value, enableCheckBox.checked)
                     );
                 });
             }

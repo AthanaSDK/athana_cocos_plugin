@@ -30,11 +30,12 @@ module.exports = {
         tri_meta_app_id: "Facebook AppID",
         tri_meta_app_client_token: "Facebook ClientToken",
         tri_google_web_client_id: "Google Web Client ID",
-        tri_firebase_config_path: "google-service.json Path"
+        tri_firebase_config_path: "GoogleService-Info.plist 路径"
     },
 
     panels: {
         config_sdk_android_version: "SDK Android 版本",
+        config_sdk_ios_version: "SDK iOS 版本",
         config_enable: "开启自定义构建配置",
         config_save: "保存"
     }
