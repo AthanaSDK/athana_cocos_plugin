@@ -21,8 +21,8 @@ export class HooksHandlerIOS {
         if (projectConfig.enable) {
             // 拷贝代码
             fse.copySync(
-                `${HooksHandlerIOS.TemplatePath}/libAthana`, 
-                `${HooksHandlerIOS.NativePath}/libAthana`, 
+                `${HooksHandlerIOS.TemplatePath}/libAthana`,
+                `${HooksHandlerIOS.NativePath}/libAthana`,
                 { recursive: true, overwrite: true }
             );
         } else {
@@ -47,7 +47,7 @@ export class HooksHandlerIOS {
         ];
 
         var configs = new Map<string, any>();
-        
+
         var facebookAppId = taskConfig.triSdk?.facebookAppId ?? '';
         var facebookClientToken = taskConfig.triSdk?.facebookClientToken ?? '';
 
@@ -150,7 +150,7 @@ export class HooksHandlerIOS {
             configs.set('GIDClientID', googleServicesPlist?.CLIENT_ID ?? '');
             configs.set('GIDServerClientID', taskConfig.triSdk?.googleWebClient ?? '');
         }
-        
+
         var configObj = Object.fromEntries(configs);
         console.log(packageJSON.name + ' configs:', configObj);
 
@@ -169,7 +169,7 @@ export class HooksHandlerIOS {
             mergedPlist = Object.assign(infoPlist, configObj);
             console.log(packageJSON.name + ' mergedPlist: ', mergedPlist);
         }
-        
+
         if (mergedPlist != null) {
             const infoPlistXML = plist.build(mergedPlist);
             console.log(packageJSON.name + ' infoPlist: ', infoPlistXML);
@@ -179,14 +179,20 @@ export class HooksHandlerIOS {
         console.log(packageJSON.name + ' updateProperty end');
     }
 
-    private async initDeps(executableName: string, dest: string, projectConfig: SdkConfig, taskConfig: SdkBuildTaskConfig) {
+    private async initDeps(
+        taskName: string, 
+        executableName: string, 
+        dest: string, 
+        projectConfig: SdkConfig, 
+        taskConfig: SdkBuildTaskConfig
+    ) {
         // 判断当前配置的依赖管理方案
         console.log(packageJSON.name + ` deps manager: ${taskConfig.depsManager}`);
+        let projPath = `${dest}/proj`;
         if (taskConfig.depsManager === DepsManagers.COCOA_PODS) {
             // CocoaPods
             console.log(packageJSON.name + ' Start CocoaPods');
 
-            let projPath = `${dest}/proj`;
             let podfilePath = `${projPath}/Podfile`;
 
             // 识别是否存在 Podfile 文件
@@ -233,7 +239,38 @@ export class HooksHandlerIOS {
         } else if (taskConfig.depsManager === DepsManagers.SWIFT_PM) {
             // SwiftPM
             console.log(packageJSON.name, 'Start SwiftPM');
+            const workspaceDir = `${projPath}/${taskName}.xcworkspace`;
+            try {
+                // 创建或更新 workspace
+                if (!fse.existsSync(workspaceDir)) {
+                    // 创建 workspace
+                    fse.ensureDirSync(workspaceDir);
 
+                    const wsData = `
+                    <?xml version="1.0" encoding="UTF-8"?>
+                    <Workspace version="1.0">
+                      <FileRef location="group:${taskName}.xcodeproj"></FileRef>
+                    </Workspace>
+                    `;
+                    fs.writeFileSync(`${workspaceDir}/contents.xcworkspacedata`, wsData, 'utf8');
+
+                    const meta = `
+                    <?xml version="1.0" encoding="UTF-8"?>
+                    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+                    <plist version="1.0">
+                    <dict>
+                      <key>WorkspaceType</key>
+                      <string>com.apple.xcode.workspace</string>
+                    </dict>
+                    </plist>
+                    `;
+                    fs.writeFileSync(`${workspaceDir}/content.xcmeta`, meta, 'utf8');
+
+                    console.log(packageJSON.name + ' created workspace and content.xcmeta');
+                }
+            } catch (e) {
+                console.log(packageJSON.name + ' create workspace error', e);
+            }
         } else {
             // 无
             console.log(packageJSON.name, 'Not match deps manager');
@@ -254,6 +291,7 @@ export class HooksHandlerIOS {
         const dest = buildResult.dest;
         console.log(packageJSON.name + ' [onBuild] dest -> ' + dest);
 
+        const taskName = options.packages?.ios?.taskName ?? options.name;
         const executableName = options.packages?.ios?.executableName ?? options.name;
 
         // 拷贝库文件
@@ -261,7 +299,7 @@ export class HooksHandlerIOS {
         // 更新配置文件
         this.updateProperties(executableName, dest, projectConfig, taskConfig);
         // 更新依赖
-        await this.initDeps(executableName, dest, projectConfig, taskConfig)
+        await this.initDeps(taskName, executableName, dest, projectConfig, taskConfig)
     }
 }
 
