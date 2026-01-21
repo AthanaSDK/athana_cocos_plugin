@@ -246,26 +246,8 @@ export class HooksHandlerIOS {
                     // 创建 workspace
                     fse.ensureDirSync(workspaceDir);
 
-                    const wsData = `
-                    <?xml version="1.0" encoding="UTF-8"?>
-                    <Workspace version="1.0">
-                      <FileRef location="group:${taskName}.xcodeproj"></FileRef>
-                    </Workspace>
-                    `;
+                    const wsData = `<?xml version="1.0" encoding="UTF-8"?>\n<Workspace version="1.0">\n  <FileRef location="group:${taskName}.xcodeproj"></FileRef>\n</Workspace>`;
                     fs.writeFileSync(`${workspaceDir}/contents.xcworkspacedata`, wsData, 'utf8');
-
-                    const meta = `
-                    <?xml version="1.0" encoding="UTF-8"?>
-                    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-                    <plist version="1.0">
-                    <dict>
-                      <key>WorkspaceType</key>
-                      <string>com.apple.xcode.workspace</string>
-                    </dict>
-                    </plist>
-                    `;
-                    fs.writeFileSync(`${workspaceDir}/content.xcmeta`, meta, 'utf8');
-
                     console.log(packageJSON.name + ' created workspace and content.xcmeta');
                 }
             } catch (e) {
