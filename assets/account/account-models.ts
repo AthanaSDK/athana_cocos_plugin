@@ -19,8 +19,17 @@ export enum SignInType {
 
     /**
      * Google Play 游戏登录
+     * 
+     * 仅在 Android 平台支持
      */
     GOOGLE_PLAY_GAMES = "GOOGLE_PLAY_GAMES",
+
+    /**
+     * Apple 账户
+     * 
+     * 仅在 iOS 平台支持
+     */
+    APPLE = "APPLE",
 
     /**
      * 自校验登录
