@@ -33,8 +33,17 @@ export class HooksHandlerIOS {
         console.log(packageJSON.name + ' copyLib end');
     }
 
-    private updateProperties(executableName: string, dest: string, projectConfig: SdkConfig, taskConfig: SdkBuildTaskConfig) {
+    private updateProperties(
+        taskName: string, 
+        dest: string, 
+        projectConfig: SdkConfig, 
+        taskConfig: SdkBuildTaskConfig,
+        executableName?: string
+    ) {
         console.log(packageJSON.name + ' updateProperty start');
+        console.log(packageJSON.name + ' taskName: ' + taskName);
+        console.log(packageJSON.name + ' executableName: ' + executableName);
+
         if (!projectConfig.enable) {
             console.log(packageJSON.name + ' plugin is disable');
             return;
@@ -120,6 +129,9 @@ export class HooksHandlerIOS {
         }
         fs.writeFileSync(athanaOptionsPath, depsContent, 'utf-8');
 
+        let exeName = executableName ?? (taskName + '-mobile');
+        console.log(packageJSON.name + ' exeName: ' + exeName);
+
         if (includeFacebook || includeGoogle) {
             configs.set('CFBundleURLTypes', new Array<Object>());
         }
@@ -134,7 +146,7 @@ export class HooksHandlerIOS {
             configs.set('FacebookAdvertiserIDCollectionEnabled', true);
             configs.set('FacebookAppID', facebookAppId);
             configs.set('FacebookClientToken', facebookClientToken);
-            configs.set('FacebookDisplayName', executableName);
+            configs.set('FacebookDisplayName', exeName);
             configs.set('LSApplicationQueriesSchemes', ['fbapi', 'fb-messenger-share-api']);
         }
         if (includeFirebase) {
@@ -154,7 +166,7 @@ export class HooksHandlerIOS {
         var configObj = Object.fromEntries(configs);
         console.log(packageJSON.name + ' configs:', configObj);
 
-        const infoPlistPath = `${dest}/proj/CMakeFiles/${executableName}.dir/Info.plist`;
+        const infoPlistPath = `${dest}/proj/CMakeFiles/${exeName}.dir/Info.plist`;
         var infoPlist = null;
         if (fse.existsSync(infoPlistPath)) {
             console.log(packageJSON.name + ' read infoPlistPath in: ' + infoPlistPath);
@@ -181,10 +193,10 @@ export class HooksHandlerIOS {
 
     private async initDeps(
         taskName: string, 
-        executableName: string, 
         dest: string, 
         projectConfig: SdkConfig, 
-        taskConfig: SdkBuildTaskConfig
+        taskConfig: SdkBuildTaskConfig,
+        executableName?: string
     ) {
         // 判断当前配置的依赖管理方案
         console.log(packageJSON.name + ` deps manager: ${taskConfig.depsManager}`);
@@ -226,11 +238,13 @@ export class HooksHandlerIOS {
             // 使用数组形式，zx 会自动处理引号和转义
             await $`sed -i '' ${sed2} ${podfilePath}`;
 
+            let exeName = executableName ?? (taskName + '-mobile');
+            
             // 插入依赖项: athana_pods
             // sed -i '' "/# Pods for athana-demo/a\\"$'\n'"  athana_pods" Podfile
-            console.log(packageJSON.name + ' insert athana_pods to: ' + executableName);
+            console.log(packageJSON.name + ' insert athana_pods to: ' + exeName);
             const insertion = "  athana_pods";
-            const sed3 = `/# Pods for ${executableName}/a\\${'\n'}${insertion}`;
+            const sed3 = `/# Pods for ${exeName}/a\\${'\n'}${insertion}`;
             await $`sed -i '' ${sed3} ${podfilePath}`;
 
             console.log(packageJSON.name + ' pod install');
@@ -274,14 +288,17 @@ export class HooksHandlerIOS {
         console.log(packageJSON.name + ' [onBuild] dest -> ' + dest);
 
         const taskName = options.packages?.ios?.taskName ?? options.name;
-        const executableName = options.packages?.ios?.executableName ?? options.name;
+        var executableName = options.packages?.ios?.executableName;
+        if (executableName.length == 0) {
+            executableName = null;
+        }
 
         // 拷贝库文件
         this.copyLib(dest, projectConfig, taskConfig);
         // 更新配置文件
-        this.updateProperties(executableName, dest, projectConfig, taskConfig);
+        this.updateProperties(taskName, dest, projectConfig, taskConfig, executableName);
         // 更新依赖
-        await this.initDeps(taskName, executableName, dest, projectConfig, taskConfig)
+        await this.initDeps(taskName, dest, projectConfig, taskConfig, executableName)
     }
 }
 
