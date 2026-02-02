@@ -35,7 +35,10 @@ export class AthanaConfig {
     public readonly testMode: Boolean = false;
 
     /** 调试模式，默认为 false。开启后SDK将输出调试日志 */
-    public readonly debug: Boolean = false
+    public readonly debug: Boolean = false;
+
+    /** 读取剪贴板权限，默认为 false。开启后SDK将在注册用户时读取剪贴板内容 */
+    public readonly readClipBoard: Boolean = false;
 
     /**
      * 构建 Athana Cocos SDK 配置参数实例
@@ -48,6 +51,7 @@ export class AthanaConfig {
      * @param conversionConfigs 归因服务配置
      * @param testMode 内购服务测试模式，默认为 false，只在测试环境下生效
      * @param debug 调试模式，默认为 false。开启后SDK将输出调试日志
+     * @param readClipBoard 读取剪贴板权限，默认为 false。开启后SDK将在注册用户时读取剪贴板内容
      */
     constructor (
         appId: String,
@@ -57,7 +61,8 @@ export class AthanaConfig {
         adConfigs: AdServiceConfigs = null,
         conversionConfigs: ConversionServiceConfigs = null,
         testMode?: Boolean,
-        debug?: Boolean
+        debug?: Boolean,
+        readClipBoard?: Boolean
     ) {
         this.appId = appId;
         this.appKey = appKey;
@@ -67,5 +72,6 @@ export class AthanaConfig {
         this.conversionConfigs = conversionConfigs;
         this.testMode = testMode ?? false;
         this.debug = debug ?? false;
+        this.readClipBoard = readClipBoard ?? false;
     }
 }

@@ -163,7 +163,8 @@ import AppTrackingTransparency
                         appId: Int(param.appId) ?? 0,
                         appKey: param.appKey,
                         appSecret: param.appSecret,
-                        debugMode: param.debug
+                        debugMode: param.debug,
+                        readClipBoard: param.readClipBoard,
                     ),
                     didFinishLaunchingWithOptions: AthanaCocos.shared.launchOptions
                 )
@@ -492,6 +493,7 @@ struct SdkInitParam: Codable {
     public let accountConfigs: AccountServiceConfig?
     public let adConfigs: AdServiceConfigs?
     public let conversionConfigs: ConversionServiceConfig?
+    public let readClipBoard: Bool
 
     init(
         appId: String,
@@ -501,7 +503,8 @@ struct SdkInitParam: Codable {
         debug: Bool,
         accountConfigs: AccountServiceConfig? = nil,
         adConfigs: AdServiceConfigs? = nil,
-        conversionConfigs: ConversionServiceConfig? = nil
+        conversionConfigs: ConversionServiceConfig? = nil,
+        readClipBoard: Bool = false
     ) {
         self.appId = appId
         self.appKey = appKey
@@ -511,6 +514,7 @@ struct SdkInitParam: Codable {
         self.accountConfigs = accountConfigs
         self.adConfigs = adConfigs
         self.conversionConfigs = conversionConfigs
+        self.readClipBoard = readClipBoard
     }
 
 }

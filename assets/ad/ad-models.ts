@@ -176,6 +176,7 @@ export class ProxyAd {
     /**
      * 广告类型
      *
+     * - 0 - Unknown
      * - 1 - Rewarded
      * - 2 - MREC
      * - 3 - Native
@@ -186,6 +187,7 @@ export class ProxyAd {
     /**
      * 广告展示类型：
      *
+     * - 0 - Unknown
      * - 1 - FullScreen Ad 全屏
      * - 2 - Banner Ad 横幅
      */

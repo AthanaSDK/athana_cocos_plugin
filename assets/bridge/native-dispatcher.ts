@@ -1,7 +1,6 @@
 import { Codec } from "./native-codec";
-import { _decorator, native } from "cc";
+import { _decorator, native, DebugMode } from "cc";
 import { NativeEventListener } from "./native-event-listener";
-import { SdkResult } from "./sdk-result";
 
 const { ccclass, property } = _decorator;
 
@@ -44,13 +43,17 @@ export class NativeDispathcer {
     }
 
     init(codec: Codec): NativeDispathcer {
-        console.debug("[NativeDispathcer] init. codec = ", codec);
+        if (DebugMode) {
+            console.debug("[NativeDispathcer] init. codec = ", codec);
+        }
         this.codec = codec;
         return this;
     }
 
     once<T>(method: string, handler: NativeEventListener<T>) {
-        console.debug("[NativeDispathcer] once", method);
+        if (DebugMode) {
+            console.debug("[NativeDispathcer] once", method);
+        }
 
         let listener: JsBridgeWrapperListener = (message: string) => {
             const ack = this.codec.decode<T>(message)
@@ -63,12 +66,16 @@ export class NativeDispathcer {
     }
 
     off<T>(method: string, handler: NativeEventListener<T>) {
-        console.debug("[NativeDispathcer] off", method);
+        if (DebugMode) {
+            console.debug("[NativeDispathcer] off", method);
+        }
         this.removeListener<T>(method, handler);
     }
 
     on<T>(method: string, handler: NativeEventListener<T>) {
-        console.debug("[NativeDispathcer] on", method);
+        if (DebugMode) {
+            console.debug("[NativeDispathcer] on", method);
+        }
         let listener: JsBridgeWrapperListener = (message: string) => {
             const ack = this.codec.decode<T>(message)
             handler(ack);

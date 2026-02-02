@@ -39,6 +39,7 @@ export { AthanaEvent } from "./event/event-models";
 export { AdType, AdSize, AdAlignment, CreateBannerParam, toAdType, ProxyAd, AdEventResult } from "./ad/ad-models";
 export { AthanaBanner } from "./ad/banner";
 export { AthanaError, AthanaErrorType } from "./bridge/sdk-result";
+import { DebugMode } from 'cc';
 
 /**
  * Athana Cocos SDK 主入口
@@ -59,7 +60,10 @@ export class Athana {
     static init(config: AthanaConfig) {
         let jsonString = JSON.stringify(config);
         console.info(`Athana Cocos - init(${config.appId})`);
-        console.debug(`Athana Cocos - init(${jsonString})`);
+        if (DebugMode) {
+            console.debug(`Athana Cocos - init(${jsonString})`);
+        }
+        
         if (this._isInitialized) {
             console.warn("Athana Cocos - already initialized");
             return;
