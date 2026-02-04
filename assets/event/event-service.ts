@@ -1,8 +1,7 @@
-import { EventTarget } from "cc";
 import { bridge } from "../bridge/native-bridge";
 import { AthanaEvent } from "./event-models";
 
-export class EventService extends EventTarget {
+export class EventService {
 
     sendEvent(param: AthanaEvent) {
         const methodName = "sendEvent";

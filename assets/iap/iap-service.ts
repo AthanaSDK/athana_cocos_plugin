@@ -1,9 +1,8 @@
-import { EventTarget } from "cc";
 import { bridge } from "../bridge/native-bridge";
 import { SdkCallback, SdkResult } from "../bridge/sdk-result";
 import { IapProduct, IapPurchaseDetail, PurchaseParam, VerifyOrderParam } from "./iap-models";
 
-export class IapService extends EventTarget {
+export class IapService {
 
     isAvailable(callback: SdkCallback<boolean>) {
         const methodName = "isAvailable";

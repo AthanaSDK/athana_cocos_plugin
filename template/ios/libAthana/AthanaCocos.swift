@@ -109,7 +109,8 @@ import AppTrackingTransparency
                             provider: AppsFlyerConversionServiceProvider(),
                             config: AppsFlyerServiceProviderConfig(
                                 devKey: appsflyerConfig!.sdkKey,
-                                appId: appsflyerConfig!.appStoreId
+                                appId: appsflyerConfig!.appStoreId,
+                                debug: param.debug
                             )
                         )
                     }

@@ -237,7 +237,7 @@ struct AccountProxyService: SDKService {
                     action: {
                         let result = try await Athana.shared.accountBinding(signInType: type)
                         CocosEventDispatcher.shared.send(
-                            methodSignInWithUI,
+                            methodAccountBinding,
                             data: SdkResult<Bool>(data: result)
                         )
                     }
@@ -247,7 +247,65 @@ struct AccountProxyService: SDKService {
     }
 
     func accountUnbind(_ data: AccountBindingParam?) {
-
+        guard let typeString = data?.signInType else {
+            let msg = "Missing SignIn Type"
+            LoggingService.shared.warn(
+                tag: AthanaCocos.TAG,
+                message: msg
+            )
+            CocosEventDispatcher.shared.send(
+                methodAccountUnbind,
+                data: SdkResult<Bool>(
+                    error: SdkError(.SDK_REQUEST_ERROR, msg: msg)
+                )
+            )
+            return
+        }
+        
+        guard let type = typeString.toSignInType() else {
+            let msg = "Unkonwn SignIn Type[\(typeString)]"
+            LoggingService.shared.warn(
+                tag: AthanaCocos.TAG,
+                message: msg
+            )
+            CocosEventDispatcher.shared.send(
+                methodAccountUnbind,
+                data: SdkResult<Bool>(
+                    error: SdkError(.SDK_REQUEST_ERROR, msg: msg)
+                )
+            )
+            return
+        }
+        
+        guard let openId = data?.triOpenID else {
+            let msg = "Missing OpenID"
+            LoggingService.shared.warn(
+                tag: AthanaCocos.TAG,
+                message: msg
+            )
+            CocosEventDispatcher.shared.send(
+                methodAccountUnbind,
+                data: SdkResult<Bool>(
+                    error: SdkError(.SDK_REQUEST_ERROR, msg: msg)
+                )
+            )
+            return
+        }
+        
+        withActor(
+            {
+                await handleSdkError(
+                    methodAccountUnbind,
+                    action: {
+                        let result = try await Athana.shared.accountUnbind(signInType: type, openId: openId)
+                        CocosEventDispatcher.shared.send(
+                            methodAccountUnbind,
+                            data: SdkResult<Bool>(data: result)
+                        )
+                    }
+                )
+            }
+        )
     }
 
     func queryAllAccountBind(_ data: AnyCodable?) {

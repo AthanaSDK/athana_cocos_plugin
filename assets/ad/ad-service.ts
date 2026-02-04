@@ -1,4 +1,3 @@
-import { EventTarget } from "cc";
 import { bridge } from "../bridge/native-bridge";
 import { AthanaError, AthanaErrorType } from "../bridge/sdk-result";
 import { AdEventResult, AdIsReadyResult, AdParam, AdType, CreateBannerParam, ProxyAd } from "./ad-models";

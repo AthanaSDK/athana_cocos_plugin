@@ -1,4 +1,3 @@
-import { EventTarget } from "cc";
 import { bridge } from "../bridge/native-bridge";
 import { SdkCallback, SdkResult } from "../bridge/sdk-result";
 import { AccountBindingParam, AccountInfo, RegisterUserParam, SignInParam, SignInWithUIParam, TriAccountBindMap, UpdateUserInfoParam } from "./account-models";
