@@ -129,7 +129,7 @@ export class PurchaseParam {
     /** 是否消耗型商品 */
     public consumable: boolean = true;
     /** 额外参数 */
-    public extra?: Map<string, any>;
+    public extra?: Object;
 
     /**
      * 构造函数
@@ -145,7 +145,11 @@ export class PurchaseParam {
         this.subsInex = subsInex;
         this.clientOrderId = clientOrderId;
         this.consumable = consumable;
-        this.extra = extra;
+        if (extra != null) {
+            this.extra = Object.fromEntries(extra);
+        } else {
+            this.extra = null;
+        }
     }
 }
 
@@ -158,7 +162,7 @@ export class VerifyOrderParam {
     /** 是否消耗型商品 */
     public consumable: boolean = true;
     /** 额外参数 */
-    public extra?: Map<string, any>;
+    public extra?: Object;
 
     /**
      * 构造函数
@@ -170,6 +174,10 @@ export class VerifyOrderParam {
     constructor(purchaseId: string, consumable: boolean = true, extra?: Map<string, any>) {
         this.purchaseId = purchaseId;
         this.consumable = consumable;
-        this.extra = extra;
+        if (extra != null) {
+            this.extra = Object.fromEntries(extra);
+        } else {
+            this.extra = null;
+        }
     }
 }

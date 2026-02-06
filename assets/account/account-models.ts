@@ -99,14 +99,18 @@ export class UserProperty {
     /**
      * 额外属性
      */
-    public readonly extra?: Map<string, any>;
+    public readonly extra?: Object;
 
     constructor(nickname?: string, email?: string, phone?: string, avatarUrl?: string, extra?: Map<string, any>) {
         this.nickname = nickname;
         this.email = email;
         this.phone = phone;
         this.avatarUrl = avatarUrl;
-        this.extra = extra;
+        if (extra != null) {
+            this.extra = Object.fromEntries(extra);
+        } else {
+            this.extra = null;
+        }
     }
 }
 
@@ -123,14 +127,18 @@ export class SignInParam {
     /** 自定义用户ID - 游戏内用户ID */
     public customUserId?: number;
     /** 额外参数 */
-    public extra?: Map<string, any>;
+    public extra?: Object;
 
     constructor(signInType: SignInType, ua?: string, deviceId?: string, customUserId?: number, extra?: Map<string, any>) {
         this.signInType = signInType;
         this.ua = ua;
         this.deviceId = deviceId;
         this.customUserId = customUserId;
-        this.extra = extra;
+        if (extra != null) {
+            this.extra = Object.fromEntries(extra);
+        } else {
+            this.extra = null;
+        }
     }
 }
 
@@ -186,7 +194,7 @@ export class AccountBindingParam {
     /** 第三方账号 Open ID */
     public triOpenID?: string = null;
     /** 额外参数 */
-    public extra?: Map<string, any> = null;
+    public extra?: Object = null;
 
     /**
      * 构造函数
@@ -198,7 +206,11 @@ export class AccountBindingParam {
     constructor(signInType: SignInType, triOpenID?: string, extra?: Map<string, any>) {
         this.signInType = signInType;
         this.triOpenID = triOpenID;
-        this.extra = extra;
+        if (extra != null) {
+            this.extra = Object.fromEntries(extra);
+        } else {
+            this.extra = null;
+        }
     }
 }
 
@@ -269,7 +281,7 @@ export class UpdateUserInfoParam {
     /** 自定义用户ID - 游戏内用户ID */
     public customUserId?: number = null;
     /** 额外参数 */
-    public extra?: Map<string, any> = null;
+    public extra?: Object = null;
 
     /**
      * 构造函数
@@ -279,6 +291,10 @@ export class UpdateUserInfoParam {
      */
     constructor(customUserId?: number, extra?: Map<string, any>) {
         this.customUserId = customUserId;
-        this.extra = extra;
+        if (extra != null) {
+            this.extra = Object.fromEntries(extra);
+        } else {
+            this.extra = null;
+        }
     }
 }

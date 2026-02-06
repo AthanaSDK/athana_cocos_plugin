@@ -14,11 +14,15 @@ export class AthanaEvent {
     /**
      * 事件参数
      */
-    public params?: Map<string, any>;
+    public params?: Object;
 
     constructor(key: string, params?: Map<string, any>, type: string = "game") {
         this.key = key;
         this.type = type;
-        this.params = params;
+        if (params != null) {
+            this.params = Object.fromEntries(params);
+        } else {
+            this.params = null;
+        }
     }
 }
