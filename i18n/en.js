@@ -13,6 +13,7 @@ module.exports = {
         ser_ad: "Advertising Service",
         ser_cvr: "Conversion Service",
         ser_push: "Push Service",
+        ser_gaming: "Gaming Service",
 
         service_enable: "Enable",
         service_enable_desc: "Enable this service, if disabled, the related components will not be imported",
@@ -30,7 +31,10 @@ module.exports = {
         tri_meta_app_id: "Facebook AppID",
         tri_meta_app_client_token: "Facebook ClientToken",
         tri_google_web_client_id: "Google Web Client ID",
-        tri_firebase_config_path: "GoogleService-Info.plist Path"
+        tri_firebase_config_path: "GoogleService-Info.plist Path",
+
+        gaming_gpgs: "Google Play Games",
+        gaming_game_center: "Apple Game Center"
     },
 
     panels: {

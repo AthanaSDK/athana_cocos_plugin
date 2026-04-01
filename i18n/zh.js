@@ -13,6 +13,7 @@ module.exports = {
         ser_ad: "广告服务",
         ser_cvr: "归因服务",
         ser_push: "推送服务",
+        ser_gaming: "游戏中心服务",
         
         service_enable: "启用",
         service_enable_desc: "启用该服务，关闭则不会引入相关组件",
@@ -30,7 +31,10 @@ module.exports = {
         tri_meta_app_id: "Facebook AppID",
         tri_meta_app_client_token: "Facebook ClientToken",
         tri_google_web_client_id: "Google Web Client ID",
-        tri_firebase_config_path: "GoogleService-Info.plist 路径"
+        tri_firebase_config_path: "GoogleService-Info.plist 路径",
+
+        gaming_gpgs: "Google Play 游戏",
+        gaming_game_center: "Apple Game Center"
     },
 
     panels: {

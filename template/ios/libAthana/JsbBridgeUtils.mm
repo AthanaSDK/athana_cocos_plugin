@@ -12,38 +12,28 @@
 @property (nonatomic, copy, nullable) JsbBridgeUtilsCallback callback;
 @end
 
+static JsbBridgeUtils *_sharedInstance = nil;
+
 @implementation JsbBridgeUtils
 
--(id)init{
-    self = [super init];
-    
-    if (self) {
-        // 建议监听列表
-        NSArray *methods = @[
-            @"init", @"start", @"requestReview", @"requestNotifications",
-            // account service
-            @"currentUser", @"registerUser", @"signIn", @"signInWithUI", @"signOut", @"accountBinding", @"accountUnbind", @"queryAllAccountBind", @"updateUserInfo",
-            // ad service
-            @"loadAd", @"isReadyAd", @"showAd",
-            @"bannerCreate", @"bannerShow", @"bannerHide", @"bannerUpdateSize", @"bannerUpdateAlignment", @"bannerDestroy",
-            // iap service
-            @"isAvailable",@"queryProducts",@"purchase",@"queryPurchaseHistory",@"verifyOrder",
-            // event service
-            @"sendEvent"
-        ];
-        
-        for (NSString *method in methods) {
-            [self listenOn:method];
-        }
++ (instancetype)sharedInstance {
+    if (_sharedInstance == nil) {
+        _sharedInstance = [[JsbBridgeUtils alloc] init];
     }
-    
+    return _sharedInstance;
+}
+
+- (id)init {
+    self = [super init];
     return self;
 }
 
-- (void)listenOn:(NSString * _Nonnull)methodName; {
++ (void)listenOn:(NSString * _Nonnull)methodName {
     JsbBridgeWrapper* wrapper = [JsbBridgeWrapper sharedInstance];
     OnScriptEventListener listener = ^void(NSString* _Nullable arg){
-        self.callback(methodName, arg);
+        if (_sharedInstance.callback) {
+            _sharedInstance.callback(methodName, arg);
+        }
     };
     
     [wrapper addScriptEventListener:methodName listener:[listener copy]];

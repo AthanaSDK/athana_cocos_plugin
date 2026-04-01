@@ -116,6 +116,11 @@ export class HooksHandlerIOS {
         if (includeGoogle) {
             deps.push(`  pod 'AthanaAdapterGoogle', '${sdkVersion}'`);
         }
+        if (taskConfig.gaming != null && taskConfig.gaming?.service == true) {
+            if (taskConfig.gaming?.gameCenter == true) {
+                deps.push(`  pod 'AthanaAdapterGameCenter', '${sdkVersion}'`);
+            }
+        }
         const athanaOptionsPath = `${dest}/proj/athana_options.rb`;
 
         var depsContent = "def athana_pods";

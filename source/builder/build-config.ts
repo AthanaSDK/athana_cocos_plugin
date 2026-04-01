@@ -162,6 +162,44 @@ const iOSTriSdk = {
     }
 };
 
+const androidGamingProviders = {
+    service: {
+        label: `i18n:${packageJSON.name}.builder.service_enable`,
+        description: `i18n:${packageJSON.name}.builder.service_enable_desc`,
+        default: false,
+        render: {
+            ui: 'ui-checkbox',
+        },
+    },
+    gpgs: {
+        label: `i18n:${packageJSON.name}.builder.gaming_gpgs`,
+        description: "",
+        default: false,
+        render: {
+            ui: 'ui-checkbox',
+        },
+    },
+}
+
+const iosGamingProviders = {
+    service: {
+        label: `i18n:${packageJSON.name}.builder.service_enable`,
+        description: `i18n:${packageJSON.name}.builder.service_enable_desc`,
+        default: false,
+        render: {
+            ui: 'ui-checkbox',
+        },
+    },
+    gameCenter: {
+        label: `i18n:${packageJSON.name}.builder.gaming_game_center`,
+        description: "",
+        default: false,
+        render: {
+            ui: 'ui-checkbox',
+        },
+    },
+}
+
 export const configs: BuildPlugin.Configs = {
     'android': {
         hooks: './hooks',
@@ -205,6 +243,15 @@ export const configs: BuildPlugin.Configs = {
                     firebase: pushProviders.firebase.default,
                 },
                 itemConfigs: pushProviders,
+            },
+            gaming: {
+                label: `i18n:${packageJSON.name}.builder.ser_gaming`,
+                type: 'object',
+                default: {
+                    service: androidGamingProviders.service.default,
+                    gpgs: androidGamingProviders.gpgs.default,
+                },
+                itemConfigs: androidGamingProviders,
             },
             triSdk: {
                 label: `i18n:${packageJSON.name}.builder.tri_sdk_config`,
@@ -289,6 +336,15 @@ export const configs: BuildPlugin.Configs = {
                     firebase: pushProviders.firebase.default,
                 },
                 itemConfigs: pushProviders,
+            },
+            gaming: {
+                label: `i18n:${packageJSON.name}.builder.ser_gaming`,
+                type: 'object',
+                default: {
+                    service: iosGamingProviders.service.default,
+                    gameCenter: iosGamingProviders.gameCenter.default,
+                },
+                itemConfigs: iosGamingProviders,
             },
             triSdk: {
                 label: `i18n:${packageJSON.name}.builder.tri_sdk_config`,

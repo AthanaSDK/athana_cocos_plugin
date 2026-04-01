@@ -92,7 +92,7 @@ struct AccountProxyService: SDKService {
         CocosEventDispatcher.shared.register(
             methodUpdateUserInfo,
             listener: { data in updateUserInfo(data) },
-            codec: JSONCodec<AnyCodable>()
+            codec: JSONCodec<UpdateUserInfoParam>()
         )
     }
 
@@ -325,8 +325,21 @@ struct AccountProxyService: SDKService {
         )
     }
 
-    func updateUserInfo(_ data: AnyCodable?) {
-
+    func updateUserInfo(_ data: UpdateUserInfoParam?) {
+        withActor(
+            {
+                await handleSdkError(
+                    methodUpdateUserInfo,
+                    action: {
+                        let result = try await Athana.shared.updateUserInfo(customUserId: data?.customUserId ?? -1)
+                        CocosEventDispatcher.shared.send(
+                            methodUpdateUserInfo,
+                            data: SdkResult<Bool>(data: result)
+                        )
+                    }
+                )
+            }
+        )
     }
 }
 
@@ -358,4 +371,8 @@ struct AccountBindingParam: Codable {
     let signInType: String
     let triOpenID: String?
     let extra: [String: AnyCodable]?
+}
+
+struct UpdateUserInfoParam: Codable {
+    let customUserId: Int?
 }

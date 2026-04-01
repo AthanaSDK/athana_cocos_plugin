@@ -7,16 +7,18 @@ if (athanaPropertiesFile.exists()) {
 }
 
 def sdkVersion = athanaProperties.getProperty("SDK_VERSION")
-def srvAccEnable = athanaProperties.getProperty("SRV_ACC_ENABLE")
-def importAccHC = athanaProperties.getProperty("IMPORT_ACC_HC")
-def srvAdEnable = athanaProperties.getProperty("SRV_AD_ENABLE")
-def importMAX = athanaProperties.getProperty("IMPORT_AD_MAX")
-def srvCovEnable = athanaProperties.getProperty("SRV_CVR_ENABLE")
-def importAppsFlyer = athanaProperties.getProperty("IMPORT_CVR_APPSFLYRE")
-def importCovFirebase = athanaProperties.getProperty("IMPORT_CVR_FIREBASE")
-def importCovFacebook = athanaProperties.getProperty("IMPORT_CVR_META")
-def srvPushEnable = athanaProperties.getProperty("SRV_PUSH_ENABLE")
-def importPushFirebase = athanaProperties.getProperty("IMPORT_PUSH_FIREBASE")
+def srvAccEnable = athanaProperties.getProperty("SRV_ACC_ENABLE").toBoolean()
+def importAccHC = athanaProperties.getProperty("IMPORT_ACC_HC").toBoolean()
+def srvAdEnable = athanaProperties.getProperty("SRV_AD_ENABLE").toBoolean()
+def importMAX = athanaProperties.getProperty("IMPORT_AD_MAX").toBoolean()
+def srvCovEnable = athanaProperties.getProperty("SRV_CVR_ENABLE").toBoolean()
+def importAppsFlyer = athanaProperties.getProperty("IMPORT_CVR_APPSFLYRE").toBoolean()
+def importCovFirebase = athanaProperties.getProperty("IMPORT_CVR_FIREBASE").toBoolean()
+def importCovFacebook = athanaProperties.getProperty("IMPORT_CVR_META").toBoolean()
+def srvPushEnable = athanaProperties.getProperty("SRV_PUSH_ENABLE").toBoolean()
+def importPushFirebase = athanaProperties.getProperty("IMPORT_PUSH_FIREBASE").toBoolean()
+def srvGamingEnable = athanaProperties.getProperty("SRV_GAMING_ENABLE").toBoolean()
+def importGamingGPGS = athanaProperties.getProperty("IMPORT_GAMING_GPGS").toBoolean()
 def gpgId = athanaProperties.getProperty("GPG_ID")
 def fbAppId = athanaProperties.getProperty("FB_APP_ID")
 def fbClientToken = athanaProperties.getProperty("FB_CLIENT_TOKEN")
@@ -62,6 +64,10 @@ android {
             }
         }
     }
+
+    packaging {
+        resources.excludes.add("META-INF/versions/9/OSGI-INF/MANIFEST.MF")
+    }
 }
 
 
@@ -93,5 +99,8 @@ dependencies {
     }
     if (srvPushEnable && importPushFirebase) {
         api "com.inonesdk.athana:push-firebase:${sdkVersion}"
+    }
+    if (srvGamingEnable && importGamingGPGS) {
+        api "com.inonesdk.athana:gaming-gpgs:${sdkVersion}"
     }
 }

@@ -77,6 +77,26 @@ export interface SdkBuildTaskConfig {
     };
 
     /**
+     * 游戏中心服务配置
+     */
+    gaming?: {
+        /**
+         * 是否开启服务
+         */
+        service: boolean;
+
+        /**
+         * 是否导入 Google Play 游戏服务
+         */
+        gpgs: boolean;
+
+        /**
+         * 是否导入 Game Center
+         */
+        gameCenter: boolean;
+    };
+
+    /**
      * 三方 SDK 配置
      */
     triSdk?: {

@@ -2,7 +2,7 @@
     "$schema": "./@types/schema/package/index.json",
     "package_version": 2,
     "name": "athana-cocos",
-    "version": "1.3.11",
+    "version": "1.4.0",
     "author": "CWJoy",
     "editor": ">=3.4.2",
     "scripts": {
@@ -55,8 +55,8 @@
             "project": {
                 "athana-sdk-config": {
                     "default": {
-                        "version": "1.3.4",
-                        "iosVersion": "1.0.0",
+                        "version": "1.5.0",
+                        "iosVersion": "1.1.0",
                         "enable": true
                     },
                     "label": "Athana插件项目配置"

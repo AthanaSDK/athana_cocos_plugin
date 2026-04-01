@@ -19,7 +19,7 @@ export class SdkConfig {
      */
     public enable: boolean;
 
-    constructor(version: string = '1.3.4', iosVersion: string = '1.0.0', enable: boolean = true) {
+    constructor(version: string = '1.5.0', iosVersion: string = '1.1.0', enable: boolean = true) {
         this.version = version;
         this.iosVersion = iosVersion;
         this.enable = enable;

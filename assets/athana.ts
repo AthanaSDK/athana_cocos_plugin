@@ -8,6 +8,7 @@ import { EventService } from "./event/event-service";
 import { IapService } from "./iap/iap-service";
 import { IapProduct, IapPurchaseDetail, PurchaseParam, VerifyOrderParam } from "./iap/iap-models";
 import { AthanaEvent } from "./event/event-models";
+import { GamingService } from "./gaming/gaming-service";
 
 export {
     AthanaConfig,
@@ -39,6 +40,30 @@ export { AthanaEvent } from "./event/event-models";
 export { AdType, AdSize, AdAlignment, CreateBannerParam, toAdType, ProxyAd, AdEventResult } from "./ad/ad-models";
 export { AthanaBanner } from "./ad/banner";
 export { AthanaError, AthanaErrorType } from "./bridge/sdk-result";
+export {
+    Achievement,
+    AchievementExtraInfo,
+    AchievementType,
+    AchievementState,
+    FriendList,
+    GetLeaderboardInfoParam,
+    GetScoreParam,
+    LeaderboardInfo,
+    LoadFriendsParam,
+    LoadLeaderboardDataParam,
+    LoadMoreLeaderboardDataParam,
+    OpenLeaderboardUIParam,
+    PageDirection,
+    PlayerProfile,
+    ScoreData,
+    ScoreExtraInfo,
+    ScoreList,
+    SubmitScoreParam,
+    UnlockAchievementParam,
+    UpdateAchievementProgressParam,
+    LeaderboardPlayerScope,
+    LeaderboardTimeSpan
+} from "./gaming/gaming-models";
 import { DebugMode } from 'cc';
 
 /**
@@ -51,6 +76,7 @@ export class Athana {
     private static _adService: AdService = new AdService();
     private static _eventService: EventService = new EventService();
     private static _iapService: IapService = new IapService();
+    private static _gamingService: GamingService = new GamingService();
 
     /**
      * 初始化 SDK
@@ -329,6 +355,16 @@ export class Athana {
             console.warn("Athana Cocos - not initialized yet");
         }
         return this._adService;
+    }
+
+    /**
+     * 获取游戏中心服务
+     */
+    static get gamingService(): GamingService {
+        if (!this._isInitialized) {
+            console.warn("Athana Cocos - not initialized yet");
+        }
+        return this._gamingService;
     }
 
     /**

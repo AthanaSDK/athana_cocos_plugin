@@ -4,12 +4,13 @@
 //
 //  Created by CWJoy on 15/12/2025.
 //
-import Foundation
-import os
-import UIKit
+
+import AppTrackingTransparency
 import AthanaCore
 import AthanaSDK
-import AppTrackingTransparency
+import Foundation
+import UIKit
+import os
 
 #if canImport(AthanaAdapterApple)
     import AthanaAdapterApple
@@ -23,6 +24,9 @@ import AppTrackingTransparency
 #if canImport(AthanaAdapterFirebase)
     import AthanaAdapterFirebase
 #endif
+#if canImport(AthanaAdapterGameCenter)
+    import AthanaAdapterGameCenter
+#endif
 #if canImport(AthanaAdapterGoogle)
     import AthanaAdapterGoogle
 #endif
@@ -33,7 +37,7 @@ import AppTrackingTransparency
 @objc public class AthanaCocos: NSObject {
 
     static let TAG = "ATHANA-Cocos"
-    
+
     @objc public static let shared = AthanaCocos()
 
     private var initialized = false
@@ -41,11 +45,12 @@ import AppTrackingTransparency
 
     override private init() {
         let adService = AdProxyService()
-        
+
         let services: [SDKService] = [
             AccountProxyService(),
             adService,
             EventProxyService(),
+            GamingProxyService(),
             IapProxyService(),
         ]
 
@@ -139,6 +144,19 @@ import AppTrackingTransparency
                     )
                 #endif
 
+                #if canImport(AthanaAdapterGameCenter)
+                    Athana.shared.registerOf(
+                        service: AccountService.shared,
+                        provider: GameCenterAccountServiceProvider()
+                    )
+                    if #available(iOS 14.0, *) {
+                        Athana.shared.registerOf(
+                            service: GamingService.shared,
+                            provider: GameCenterGamingServiceProvider()
+                        )
+                    }
+                #endif
+
                 #if canImport(AthanaAdapterGoogle)
                     Athana.shared.registerOf(
                         service: AccountService.shared,
@@ -204,7 +222,7 @@ import AppTrackingTransparency
                 )
             }
         )
-        
+
         CocosEventDispatcher.shared.register(
             "requestNotifications",
             listener: {
@@ -231,9 +249,13 @@ import AppTrackingTransparency
     ) -> Bool {
         return Athana.shared.application(app, open: url, options: options)
     }
-    
-    @objc public func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        Athana.shared.application(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
+
+    @objc public func application(
+        _ application: UIApplication,
+        didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
+    ) {
+        Athana.shared.application(
+            application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
     }
 
     @objc public func scene(
@@ -249,7 +271,7 @@ import AppTrackingTransparency
     ) -> Bool {
         return Athana.shared.scene(scene, openURLContexts: URLContexts)
     }
-    
+
 }
 
 private func requestATT() {
@@ -279,15 +301,17 @@ protocol Codec {
 
 }
 
-class CocosEventDispatcher: NSObject {
+@objc class CocosEventDispatcher: NSObject {
 
-    public static let shared = CocosEventDispatcher()
+    @objc public static let shared = CocosEventDispatcher()
 
     override private init() {}
 
     private var bridge = JsbBridgeWrapper.sharedInstance()
 
     private var handlers: [String: (String?) -> Void] = [:]
+
+    @objc var listenHandler: ((String) -> Void)?
 
     func register<T: Codable, C: Codec>(
         _ methodName: String,
@@ -299,6 +323,8 @@ class CocosEventDispatcher: NSObject {
             type: .debug,
             "[\(AthanaCocos.TAG)] bridge register: method -> \(methodName)"
         )
+
+        listenHandler?(methodName)
 
         handlers[methodName] = { arg in
             guard let json = arg else {
@@ -317,7 +343,7 @@ class CocosEventDispatcher: NSObject {
                     type: .debug,
                     "[\(AthanaCocos.TAG)] From Cocos: method -> \(methodName), message -> \(json)"
                 )
-                if (json.isEmpty) {
+                if json.isEmpty {
                     listener(nil)
                 } else {
                     let data = try codec.de(json)
@@ -342,6 +368,8 @@ class CocosEventDispatcher: NSObject {
             type: .debug,
             "[\(AthanaCocos.TAG)] bridge register: method -> \(methodName)"
         )
+
+        listenHandler?(methodName)
 
         handlers[methodName] = { arg in
             os_log(
@@ -615,7 +643,7 @@ public enum AnyCodable: Codable {
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
-        
+
         if let x = try? container.decode(String.self) {
             self = .string(x)
         } else if let x = try? container.decode(Double.self) {
@@ -629,7 +657,9 @@ public enum AnyCodable: Codable {
         } else if container.decodeNil() {
             self = .nilValue
         } else {
-            throw DecodingError.typeMismatch(AnyCodable.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "不支持的类型"))
+            throw DecodingError.typeMismatch(
+                AnyCodable.self,
+                DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "不支持的类型"))
         }
     }
 
@@ -644,7 +674,7 @@ public enum AnyCodable: Codable {
         case .nilValue: try container.encodeNil()
         }
     }
-    
+
     func take() -> Any? {
         return switch self {
         case .string(let x): x
@@ -658,13 +688,13 @@ public enum AnyCodable: Codable {
 }
 
 extension [String: AnyCodable] {
-    
+
     func toDict() -> [String: Any] {
         var newValues: [String: Any] = [:]
         self.forEach {
             let key = $0.key
             let value = $0.value
-            
+
             switch value {
             case .nilValue:
                 break
@@ -675,7 +705,7 @@ extension [String: AnyCodable] {
         }
         return newValues
     }
-    
+
 }
 
 func withActor(_ action: @escaping () async -> Void, isMain: Bool = false) {
@@ -706,7 +736,8 @@ func handleSdkError(
             )
             return
         }
-        sdkError = SdkError(athanaError.type, errorCode: athanaError.errorCode, message: athanaError.message)
+        sdkError = SdkError(
+            athanaError.type, errorCode: athanaError.errorCode, message: athanaError.message)
         CocosEventDispatcher.shared.send(
             methodName,
             data: SdkResult<Bool>(error: sdkError)

@@ -65,6 +65,8 @@ export class HooksHandlerAndroid {
             `IMPORT_CVR_META=${taskConfig.conversion?.meta == true ? "true" : "false"}\n` +
             `SRV_PUSH_ENABLE=${projectConfig.enable && taskConfig.push?.service == true ? "true" : "false"}\n` +
             `IMPORT_PUSH_FIREBASE=${taskConfig.push?.firebase == true ? "true" : "false"}\n` +
+            `SRV_GAMING_ENABLE=${projectConfig.enable && taskConfig.gaming?.service == true ? "true" : "false"}\n` +
+            `IMPORT_GAMING_GPGS=${taskConfig.gaming?.gpgs == true ? "true" : "false"}\n` +
             `GPG_ID=${taskConfig.account?.gpgId || ""}\n` +
             `FB_APP_ID=${taskConfig.triSdk?.facebookAppId || ""}\n` +
             `FB_CLIENT_TOKEN=${taskConfig.triSdk?.facebookClientToken || ""}\n`
