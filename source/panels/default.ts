@@ -22,7 +22,8 @@ module.exports = Editor.Panel.define({
         versionInput: '#versionInput',
         iOSVersionInput: '#iOSVersionInput',
         enableCheckBox: '#enableCheckBox',
-        saveBtn: '#saveBtn'
+        saveBtn: '#saveBtn',
+        errorDisplay: '#errorDisplay'
     },
     methods: {
         save(config?: SdkConfig) {
@@ -32,6 +33,38 @@ module.exports = Editor.Panel.define({
                 newConfig.save();
             }
         },
+        showError(message: string) {
+            const errorDisplay = this.$.errorDisplay;
+            if (errorDisplay) {
+                errorDisplay.textContent = message;
+                errorDisplay.style.display = 'block';
+            }
+        },
+        hideError() {
+            const errorDisplay = this.$.errorDisplay;
+            if (errorDisplay) {
+                errorDisplay.style.display = 'none';
+            }
+        },
+        validateVersion(versionInput: HTMLInputElement, iOSVersionInput: HTMLInputElement): boolean {
+            this.hideError();
+            
+            const androidValidation = SdkConfig.validateAndroidVersion(versionInput.value);
+            if (!androidValidation.valid) {
+                this.showError(androidValidation.message || 'Android SDK版本无效');
+                versionInput.focus();
+                return false;
+            }
+            
+            const iosValidation = SdkConfig.validateIosVersion(iOSVersionInput.value);
+            if (!iosValidation.valid) {
+                this.showError(iosValidation.message || 'iOS SDK版本无效');
+                iOSVersionInput.focus();
+                return false;
+            }
+            
+            return true;
+        }
     },
     ready() {
         // 加载完成
@@ -44,16 +77,21 @@ module.exports = Editor.Panel.define({
         SdkConfig.read().then((config?: SdkConfig) => {
             console.debug('load config data:', config);
             if (versionInput) {
-                versionInput.value = config.version;
+                versionInput.value = config?.version || SdkConfig.MIN_ANDROID_VERSION;
             }
             if (iOSVersionInput) {
-                iOSVersionInput.value = config.iosVersion;
+                iOSVersionInput.value = config?.iosVersion || SdkConfig.MIN_IOS_VERSION;
             }
             if (enableCheckBox) {
-                enableCheckBox.checked = config.enable;
+                enableCheckBox.checked = config?.enable ?? true;
             }
             if (saveBtn) {
                 saveBtn.addEventListener('click', () => {
+                    // 验证版本
+                    if (!this.validateVersion(versionInput, iOSVersionInput)) {
+                        return;
+                    }
+                    
                     Editor.Message.request(
                         packageJSON.name, 
                         'sdk-config-save', 
