@@ -210,7 +210,7 @@ import os
                         await handleSdkError(
                             rmn,
                             action: {
-                                try await Athana.shared.requestReview()
+                                await Athana.shared.requestReview()
                                 CocosEventDispatcher.shared.send(
                                     rmn,
                                     data: SdkResult<Bool>(data: true)
@@ -226,7 +226,7 @@ import os
         CocosEventDispatcher.shared.register(
             "requestNotifications",
             listener: {
-                Athana.shared.requestNotications()
+                Athana.shared.requestNotifcations()
             }
         )
     }
