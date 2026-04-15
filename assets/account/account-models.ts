@@ -44,7 +44,7 @@ export class AccountInfo {
     /**
      * 平台用户Id
      */
-    public readonly userId: number;
+    public readonly userId: string;
     /**
      * 平台用户访问凭证
      */

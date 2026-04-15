@@ -25,9 +25,16 @@ struct AccountProxyService: SDKService {
             listener: {
                 Task {
                     let result = await Athana.shared.currentUser()
+                    let transformResult: ProxyAccountInfo?
+                    if let info = result {
+                        transformResult = ProxyAccountInfo(from: info)
+                    } else {
+                        transformResult = nil
+                    }
+                    
                     CocosEventDispatcher.shared.send(
                         methodCurrentUser,
-                        data: SdkResult<AccountInfo>(data: result)
+                        data: SdkResult<ProxyAccountInfo>(data: transformResult)
                     )
                 }
             }
@@ -110,7 +117,7 @@ struct AccountProxyService: SDKService {
                         )
                         CocosEventDispatcher.shared.send(
                             methodRegisterUser,
-                            data: SdkResult<AccountInfo>(data: result)
+                            data: SdkResult<ProxyAccountInfo>(data: ProxyAccountInfo(from: result))
                         )
                     }
                 )
@@ -128,7 +135,7 @@ struct AccountProxyService: SDKService {
             )
             CocosEventDispatcher.shared.send(
                 methodSignIn,
-                data: SdkResult<AccountInfo>(
+                data: SdkResult<ProxyAccountInfo>(
                     error: SdkError(.SDK_REQUEST_ERROR, msg: msg)
                 )
             )
@@ -142,7 +149,7 @@ struct AccountProxyService: SDKService {
             )
             CocosEventDispatcher.shared.send(
                 methodSignIn,
-                data: SdkResult<AccountInfo>(
+                data: SdkResult<ProxyAccountInfo>(
                     error: SdkError(.SDK_REQUEST_ERROR, msg: msg)
                 )
             )
@@ -161,7 +168,7 @@ struct AccountProxyService: SDKService {
                         )
                         CocosEventDispatcher.shared.send(
                             methodSignIn,
-                            data: SdkResult<AccountInfo>(data: result)
+                            data: SdkResult<ProxyAccountInfo>(data: ProxyAccountInfo(from: result))
                         )
                     }
                 )
@@ -192,7 +199,7 @@ struct AccountProxyService: SDKService {
                         )
                         CocosEventDispatcher.shared.send(
                             methodSignInWithUI,
-                            data: SdkResult<AccountInfo>(data: result)
+                            data: SdkResult<ProxyAccountInfo>(data: ProxyAccountInfo(from: result))
                         )
                     }
                 )
@@ -340,6 +347,24 @@ struct AccountProxyService: SDKService {
                 )
             }
         )
+    }
+}
+
+struct ProxyAccountInfo: Codable {
+    let userId: String
+    let accessToken: String
+    let signInType: String?
+    let triOpenId: String?
+    let triAccessToken: String?
+    let userProperty: UserProperty?
+
+    init(from account: AccountInfo) {
+        self.userId = String(account.userId)
+        self.accessToken = account.accessToken
+        self.signInType = account.signInType
+        self.triOpenId = account.triOpenId
+        self.triAccessToken = account.triAccessToken
+        self.userProperty = account.userProperty
     }
 }
 
