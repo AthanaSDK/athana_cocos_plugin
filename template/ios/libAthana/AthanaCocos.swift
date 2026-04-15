@@ -226,7 +226,7 @@ import os
         CocosEventDispatcher.shared.register(
             "requestNotifications",
             listener: {
-                Athana.shared.requestNotifcations()
+                Athana.shared.requestNotifications()
             }
         )
     }
