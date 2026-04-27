@@ -21,7 +21,7 @@ export class SdkConfig {
     /**
      * iOS SDK最低版本
      */
-    public static readonly MIN_IOS_VERSION = '1.1.0';
+    public static readonly MIN_IOS_VERSION = '1.1.3';
     
     /**
      * 构建任务集成的Android SDK版本
@@ -36,7 +36,11 @@ export class SdkConfig {
      */
     public enable: boolean;
 
-    constructor(version: string = '1.5.1', iosVersion: string = '1.1.0', enable: boolean = true) {
+    constructor(
+        version: string = SdkConfig.MIN_ANDROID_VERSION, 
+        iosVersion: string = SdkConfig.MIN_IOS_VERSION, 
+        enable: boolean = true
+    ) {
         this.version = version;
         this.iosVersion = iosVersion;
         this.enable = enable;

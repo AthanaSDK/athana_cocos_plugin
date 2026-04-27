@@ -253,7 +253,7 @@ export class HooksHandlerIOS {
             await $`sed -i '' ${sed3} ${podfilePath}`;
 
             console.log(packageJSON.name + ' pod install');
-            const installResult = await $`(export LANG=en_US.UTF-8 && cd ${projPath} && pod install)`;
+            const installResult = await $`(export LANG=en_US.UTF-8 && cd ${projPath} && pod repo update && pod install)`;
 
         } else if (taskConfig.depsManager === DepsManagers.SWIFT_PM) {
             // SwiftPM

@@ -338,10 +338,10 @@ struct AccountProxyService: SDKService {
                 await handleSdkError(
                     methodUpdateUserInfo,
                     action: {
-                        let result = try await Athana.shared.updateUserInfo(customUserId: data?.customUserId ?? -1)
+                        try await Athana.shared.updateUserInfo(customUserId: data?.customUserId ?? -1)
                         CocosEventDispatcher.shared.send(
                             methodUpdateUserInfo,
-                            data: SdkResult<Bool>(data: result)
+                            data: SdkResult<Bool>(data: true)
                         )
                     }
                 )
