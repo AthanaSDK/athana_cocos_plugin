@@ -34,7 +34,14 @@ export enum SignInType {
     /**
      * 自校验登录
      */
-    BY_CLIENT_SELF = "BY_CLIENT_SELF"
+    BY_CLIENT_SELF = "BY_CLIENT_SELF",
+
+    /**
+     * Apple Game Center 登录
+     * 
+     * 仅在 iOS 平台支持
+     */
+    APPLE_GAME_CENTER = "APPLE_GAME_CENTER", 
 }
 
 /**
@@ -66,7 +73,7 @@ export class AccountInfo {
      */
     public readonly userProperty: UserProperty;
 
-    constructor(userId: number, accessToken: string, signInType: SignInType, triOpenId?: string, triAccessToken?: string, userProperty?: UserProperty) {
+    constructor(userId: string, accessToken: string, signInType: SignInType, triOpenId?: string, triAccessToken?: string, userProperty?: UserProperty) {
         this.userId = userId;
         this.accessToken = accessToken;
         this.signInType = signInType;
