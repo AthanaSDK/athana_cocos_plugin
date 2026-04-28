@@ -244,12 +244,27 @@ export class TriAccountBindMap{
      */
     public readonly Firebase?: TriAccount = null;
 
-    constructor(facebook?: TriAccount, apple?: TriAccount, google?: TriAccount, googleGameV2?: TriAccount, firebase?: TriAccount) {
+    /**
+     * Game Center 账号绑定信息
+     * 
+     * 仅在 iOS 平台支持
+     */
+    public readonly GameCenter?: TriAccount = null;
+
+    constructor(
+        facebook?: TriAccount, 
+        apple?: TriAccount, 
+        google?: TriAccount, 
+        googleGameV2?: TriAccount, 
+        firebase?: TriAccount,
+        gameCenter?: TriAccount
+    ) {
         this.Facebook = facebook;
         this.Apple = apple;
         this.Google = google;
         this.GoogleGameV2 = googleGameV2;
         this.Firebase = firebase;
+        this.GameCenter = gameCenter;
     }
 }
 
