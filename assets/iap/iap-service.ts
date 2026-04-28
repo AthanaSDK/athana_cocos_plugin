@@ -74,4 +74,18 @@ export class IapService {
         bridge.send2Native<VerifyOrderParam>(methodName, param);
     }
 
+    restorePurchase(callback: SdkCallback<boolean>) {
+        const methodName = "restorePurchase";
+        bridge.dispathcer.once<SdkResult<boolean>>(
+            methodName,
+            (result) => {
+                if (result.error != null) {
+                    callback.onError(result.error);
+                } else {
+                    callback.onSuccess(result.data);
+                }
+            });
+        bridge.send2Native<void>(methodName);
+    }
+
 }

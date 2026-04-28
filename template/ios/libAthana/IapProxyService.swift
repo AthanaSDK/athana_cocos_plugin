@@ -14,6 +14,7 @@ struct IapProxyService: SDKService {
     static let methodPurchase = "purchase"
     static let methodQueryPurchaseHistory = "queryPurchaseHistory"
     static let methodVerifyOrder = "verifyOrder"
+    static let methodRestorePurchase = "restorePurchase"
     
     func initialize() {
         CocosEventDispatcher.shared.register(
@@ -236,6 +237,27 @@ struct IapProxyService: SDKService {
                 )
             },
             codec: JSONCodec<VerifyOrderParam>()
+        )
+
+        CocosEventDispatcher.shared.register(
+            IapProxyService.methodRestorePurchase,
+            listener: {
+                withActor(
+                    {
+                        await handleSdkError(
+                            IapProxyService.methodRestorePurchase,
+                            action: {
+                                try await Athana.shared.restorePurchase()
+                                try? await Task.sleep(nanoseconds: 4 * 1_000_000_000)
+                                CocosEventDispatcher.shared.send(
+                                    IapProxyService.methodRestorePurchase,
+                                    data: SdkResult<Bool>(data: true)
+                                )
+                            }
+                        )
+                    }
+                )
+            }
         )
         
     }

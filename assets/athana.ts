@@ -64,7 +64,7 @@ export {
     LeaderboardPlayerScope,
     LeaderboardTimeSpan
 } from "./gaming/gaming-models";
-import { DebugMode } from 'cc';
+import { DebugMode, sys } from 'cc';
 
 /**
  * Athana Cocos SDK 主入口
@@ -322,6 +322,26 @@ export class Athana {
             return;
         }
         this._iapService.verifyOrder(param, callback);
+    }
+
+    /**
+     * 恢复购买
+     * 
+     * PS: 只在 iOS 平台下有效
+     * 
+     * @param callback 回调函数，返回验证结果
+     */
+    static restorePurchase(callback: SdkCallback<boolean>) {
+        if (!this._isInitialized) {
+            console.warn("Athana Cocos - not initialized yet");
+            return;
+        }
+        if (sys.platform != sys.Platform.IOS) {
+            console.warn("Athana Cocos - restorePurchase not implemented on this platform");
+            callback.onSuccess(false);
+            return;
+        }
+        this._iapService.restorePurchase(callback);
     }
 
     /**
